@@ -4,6 +4,8 @@ QuickLook DDS Plugin
 This is a plugin for QuickLook on OSX 10.5 and later.
 It allows Finder to display thumbnails and previews of DDS files.
 
+Version 1.00: http://marginal.org.uk/QLdds_100.pkg
+
 Acknowledgements
 ----------------
 Uses the SOIL library to decode DDS files - http://www.lonesock.net/soil.html
