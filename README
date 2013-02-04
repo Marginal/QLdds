@@ -6,7 +6,7 @@ It allows Finder to display thumbnails and previews of DDS files.
 
 Acknowledgements
 ----------------
-Uses the SOIL library to decode DDS filed - http://www.lonesock.net/soil.html
+Uses the SOIL library to decode DDS files - http://www.lonesock.net/soil.html
 Nyx0uf for the idea of adding image dimensions to the preview title - http://www.cocoaintheshell.com/2012/02/quicklook-images-dimensions/
 
 License
