@@ -1,0 +1,386 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AB8A4A251A22DF1D002E5A59 /* GetMetadataForFile.c in Sources */ = {isa = PBXBuildFile; fileRef = AB8A4A221A22DF1D002E5A59 /* GetMetadataForFile.c */; };
+		AB36E9991A2E91BE00862ADF /* schema.xml in Resources */ = {isa = PBXBuildFile; fileRef = AB36E9971A2E91A100862ADF /* schema.xml */; };
+		AB8A4A271A22DF1D002E5A59 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = AB8A4A241A22DF1D002E5A59 /* main.c */; };
+		ABAB4A381A238A7B00B1BD18 /* GenerateThumbnailForURL.c in Sources */ = {isa = PBXBuildFile; fileRef = AB8A4A2E1A22DFB6002E5A59 /* GenerateThumbnailForURL.c */; };
+		ABAB4A391A238A8000B1BD18 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = AB8A4A301A22DFB6002E5A59 /* main.c */; };
+		ABAB4A3A1A238A8400B1BD18 /* GeneratePreviewForURL.c in Sources */ = {isa = PBXBuildFile; fileRef = AB8A4A2D1A22DFB6002E5A59 /* GeneratePreviewForURL.c */; };
+		ABAB4A3B1A238A8C00B1BD18 /* image_DXT.c in Sources */ = {isa = PBXBuildFile; fileRef = AB8A4A131A22DEA7002E5A59 /* image_DXT.c */; };
+		ABAB4A3C1A238A9100B1BD18 /* image_helper.c in Sources */ = {isa = PBXBuildFile; fileRef = AB8A4A151A22DEA7002E5A59 /* image_helper.c */; };
+		ABAB4A3D1A238AAA00B1BD18 /* SOIL.c in Sources */ = {isa = PBXBuildFile; fileRef = AB8A4A171A22DEA7002E5A59 /* SOIL.c */; };
+		ABAB4A3E1A238AAF00B1BD18 /* stb_image_aug.c in Sources */ = {isa = PBXBuildFile; fileRef = AB8A4A191A22DEA7002E5A59 /* stb_image_aug.c */; };
+		ABAB4B111A238BFD00B1BD18 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB8A4AD81A22FD09002E5A59 /* ApplicationServices.framework */; };
+		ABAB4B1A1A238C1500B1BD18 /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB8A4AA41A22FBB0002E5A59 /* QuickLook.framework */; };
+		ABAB4EC71A238D6700B1BD18 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABAB4EC61A238D6700B1BD18 /* OpenGL.framework */; };
+		ABAB4EDA1A238E0F00B1BD18 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB8A4AD81A22FD09002E5A59 /* ApplicationServices.framework */; };
+		ABAB4EDF1A238E4E00B1BD18 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB8A4A961A22FAED002E5A59 /* CoreFoundation.framework */; };
+		ABAB4EE01A238E4F00B1BD18 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB8A4AA21A22FBB0002E5A59 /* CoreServices.framework */; };
+		ABAB4EEB1A238EF800B1BD18 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB8A4A961A22FAED002E5A59 /* CoreFoundation.framework */; };
+		ABD435031A2E8BD000ED8B26 /* schema.xml in Resources */ = {isa = PBXBuildFile; fileRef = ABD435021A2E8BD000ED8B26 /* schema.xml */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		AB36E9971A2E91A100862ADF /* schema.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = schema.xml; path = mdimporter/schema.xml; sourceTree = SOURCE_ROOT; };
+		AB60480E1A2691E900D39FDE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		AB8A4A0A1A22DD6B002E5A59 /* DDS.mdimporter */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DDS.mdimporter; sourceTree = BUILT_PRODUCTS_DIR; };
+		AB8A4A131A22DEA7002E5A59 /* image_DXT.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = image_DXT.c; sourceTree = "<group>"; };
+		AB8A4A141A22DEA7002E5A59 /* image_DXT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = image_DXT.h; sourceTree = "<group>"; };
+		AB8A4A151A22DEA7002E5A59 /* image_helper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = image_helper.c; sourceTree = "<group>"; };
+		AB8A4A161A22DEA7002E5A59 /* image_helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = image_helper.h; sourceTree = "<group>"; };
+		AB8A4A171A22DEA7002E5A59 /* SOIL.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = SOIL.c; sourceTree = "<group>"; };
+		AB8A4A181A22DEA7002E5A59 /* SOIL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOIL.h; sourceTree = "<group>"; };
+		AB8A4A191A22DEA7002E5A59 /* stb_image_aug.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = stb_image_aug.c; sourceTree = "<group>"; };
+		AB8A4A1A1A22DEA7002E5A59 /* stb_image_aug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_image_aug.h; sourceTree = "<group>"; };
+		AB8A4A1B1A22DEA7002E5A59 /* stbi_DDS_aug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stbi_DDS_aug.h; sourceTree = "<group>"; };
+		AB8A4A1C1A22DEA7002E5A59 /* stbi_DDS_aug_c.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stbi_DDS_aug_c.h; sourceTree = "<group>"; };
+		AB8A4A221A22DF1D002E5A59 /* GetMetadataForFile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GetMetadataForFile.c; sourceTree = "<group>"; };
+		AB8A4A231A22DF1D002E5A59 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AB8A4A241A22DF1D002E5A59 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		AB8A4A2D1A22DFB6002E5A59 /* GeneratePreviewForURL.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GeneratePreviewForURL.c; sourceTree = "<group>"; };
+		AB8A4A2E1A22DFB6002E5A59 /* GenerateThumbnailForURL.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GenerateThumbnailForURL.c; sourceTree = "<group>"; };
+		AB8A4A2F1A22DFB6002E5A59 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AB8A4A301A22DFB6002E5A59 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		AB8A4A961A22FAED002E5A59 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		AB8A4AA21A22FBB0002E5A59 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
+		AB8A4AA41A22FBB0002E5A59 /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
+		AB8A4AD81A22FD09002E5A59 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
+		ABAB4A311A23898A00B1BD18 /* QLdds.qlgenerator */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QLdds.qlgenerator; sourceTree = BUILT_PRODUCTS_DIR; };
+		ABAB4EC61A238D6700B1BD18 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AB8A4A081A22DD6B002E5A59 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ABAB4EDA1A238E0F00B1BD18 /* ApplicationServices.framework in Frameworks */,
+				ABAB4EDF1A238E4E00B1BD18 /* CoreFoundation.framework in Frameworks */,
+				ABAB4EE01A238E4F00B1BD18 /* CoreServices.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ABAB4A2F1A23898A00B1BD18 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ABAB4B111A238BFD00B1BD18 /* ApplicationServices.framework in Frameworks */,
+				ABAB4B1A1A238C1500B1BD18 /* QuickLook.framework in Frameworks */,
+				ABAB4EC71A238D6700B1BD18 /* OpenGL.framework in Frameworks */,
+				ABAB4EEB1A238EF800B1BD18 /* CoreFoundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		AB8A49DA1A22DBE7002E5A59 = {
+			isa = PBXGroup;
+			children = (
+				AB8A4A211A22DEDD002E5A59 /* mdimporter */,
+				AB8A4A281A22DF8F002E5A59 /* qlgenerator */,
+				AB8A4A121A22DEA7002E5A59 /* SOIL */,
+				ABAB4CFF1A238C6000B1BD18 /* External Frameworks and Libraries */,
+				AB8A4A0B1A22DD6B002E5A59 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		AB8A4A0B1A22DD6B002E5A59 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AB8A4A0A1A22DD6B002E5A59 /* DDS.mdimporter */,
+				ABAB4A311A23898A00B1BD18 /* QLdds.qlgenerator */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AB8A4A121A22DEA7002E5A59 /* SOIL */ = {
+			isa = PBXGroup;
+			children = (
+				AB8A4A131A22DEA7002E5A59 /* image_DXT.c */,
+				AB8A4A141A22DEA7002E5A59 /* image_DXT.h */,
+				AB8A4A151A22DEA7002E5A59 /* image_helper.c */,
+				AB8A4A161A22DEA7002E5A59 /* image_helper.h */,
+				AB8A4A171A22DEA7002E5A59 /* SOIL.c */,
+				AB8A4A181A22DEA7002E5A59 /* SOIL.h */,
+				AB8A4A191A22DEA7002E5A59 /* stb_image_aug.c */,
+				AB8A4A1A1A22DEA7002E5A59 /* stb_image_aug.h */,
+				AB8A4A1B1A22DEA7002E5A59 /* stbi_DDS_aug.h */,
+				AB8A4A1C1A22DEA7002E5A59 /* stbi_DDS_aug_c.h */,
+			);
+			path = SOIL;
+			sourceTree = "<group>";
+		};
+		AB8A4A211A22DEDD002E5A59 /* mdimporter */ = {
+			isa = PBXGroup;
+			children = (
+				AB8A4A221A22DF1D002E5A59 /* GetMetadataForFile.c */,
+				AB8A4A241A22DF1D002E5A59 /* main.c */,
+				AB36E9971A2E91A100862ADF /* schema.xml */,
+				AB8A4A231A22DF1D002E5A59 /* Info.plist */,
+			);
+			path = mdimporter;
+			sourceTree = "<group>";
+		};
+		AB8A4A281A22DF8F002E5A59 /* qlgenerator */ = {
+			isa = PBXGroup;
+			children = (
+				AB8A4A301A22DFB6002E5A59 /* main.c */,
+				AB8A4A2D1A22DFB6002E5A59 /* GeneratePreviewForURL.c */,
+				AB8A4A2E1A22DFB6002E5A59 /* GenerateThumbnailForURL.c */,
+				AB8A4A2F1A22DFB6002E5A59 /* Info.plist */,
+			);
+			path = qlgenerator;
+			sourceTree = "<group>";
+		};
+		ABAB4CFF1A238C6000B1BD18 /* External Frameworks and Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				AB8A4AD81A22FD09002E5A59 /* ApplicationServices.framework */,
+				AB8A4AA41A22FBB0002E5A59 /* QuickLook.framework */,
+				AB8A4AA21A22FBB0002E5A59 /* CoreServices.framework */,
+				AB8A4A961A22FAED002E5A59 /* CoreFoundation.framework */,
+				ABAB4EC61A238D6700B1BD18 /* OpenGL.framework */,
+			);
+			name = "External Frameworks and Libraries";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AB8A4A091A22DD6B002E5A59 /* mdimporter */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AB8A4A0F1A22DD6C002E5A59 /* Build configuration list for PBXNativeTarget "mdimporter" */;
+			buildPhases = (
+				AB8A4A061A22DD6B002E5A59 /* Resources */,
+				AB8A4A071A22DD6B002E5A59 /* Sources */,
+				AB8A4A081A22DD6B002E5A59 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = mdimporter;
+			productName = mdimporter;
+			productReference = AB8A4A0A1A22DD6B002E5A59 /* DDS.mdimporter */;
+			productType = "com.apple.product-type.bundle";
+		};
+		ABAB4A301A23898A00B1BD18 /* qlgenerator */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ABAB4A361A23898B00B1BD18 /* Build configuration list for PBXNativeTarget "qlgenerator" */;
+			buildPhases = (
+				ABAB4A2D1A23898A00B1BD18 /* Resources */,
+				ABAB4A2E1A23898A00B1BD18 /* Sources */,
+				ABAB4A2F1A23898A00B1BD18 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = qlgenerator;
+			productName = QLdds;
+			productReference = ABAB4A311A23898A00B1BD18 /* QLdds.qlgenerator */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AB8A49DC1A22DBE7002E5A59 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+			};
+			buildConfigurationList = AB8A49DF1A22DBE7002E5A59 /* Build configuration list for PBXProject "QLdds" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = AB8A49DA1A22DBE7002E5A59;
+			productRefGroup = AB8A4A0B1A22DD6B002E5A59 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AB8A4A091A22DD6B002E5A59 /* mdimporter */,
+				ABAB4A301A23898A00B1BD18 /* qlgenerator */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		AB8A4A061A22DD6B002E5A59 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AB36E9991A2E91BE00862ADF /* schema.xml in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ABAB4A2D1A23898A00B1BD18 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AB8A4A071A22DD6B002E5A59 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AB8A4A251A22DF1D002E5A59 /* GetMetadataForFile.c in Sources */,
+				AB8A4A271A22DF1D002E5A59 /* main.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ABAB4A2E1A23898A00B1BD18 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ABAB4A381A238A7B00B1BD18 /* GenerateThumbnailForURL.c in Sources */,
+				ABAB4A391A238A8000B1BD18 /* main.c in Sources */,
+				ABAB4A3A1A238A8400B1BD18 /* GeneratePreviewForURL.c in Sources */,
+				ABAB4A3B1A238A8C00B1BD18 /* image_DXT.c in Sources */,
+				ABAB4A3C1A238A9100B1BD18 /* image_helper.c in Sources */,
+				ABAB4A3D1A238AAA00B1BD18 /* SOIL.c in Sources */,
+				ABAB4A3E1A238AAF00B1BD18 /* stb_image_aug.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		AB8A49DD1A22DBE7002E5A59 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_FAST_MATH = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)";
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				ONLY_ACTIVE_ARCH = YES;
+			};
+			name = Debug;
+		};
+		AB8A49DE1A22DBE7002E5A59 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					"$(ARCHS_STANDARD_32_64_BIT)",
+					ppc7400,
+				);
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_FAST_MATH = YES;
+				GCC_UNROLL_LOOPS = YES;
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)";
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
+			};
+			name = Release;
+		};
+		AB8A4A0D1A22DD6C002E5A59 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INFOPLIST_FILE = mdimporter/Info.plist;
+				INSTALL_PATH = /Library/Spotlight;
+				PREBINDING = NO;
+				PRODUCT_NAME = DDS;
+				WRAPPER_EXTENSION = mdimporter;
+			};
+			name = Debug;
+		};
+		AB8A4A0E1A22DD6C002E5A59 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				INFOPLIST_FILE = mdimporter/Info.plist;
+				INSTALL_PATH = /Library/Spotlight;
+				PREBINDING = NO;
+				PRODUCT_NAME = DDS;
+				WRAPPER_EXTENSION = mdimporter;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		ABAB4A341A23898B00B1BD18 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INFOPLIST_FILE = qlgenerator/Info.plist;
+				INSTALL_PATH = /Library/QuickLook;
+				PREBINDING = NO;
+				PRODUCT_NAME = QLdds;
+				WRAPPER_EXTENSION = qlgenerator;
+			};
+			name = Debug;
+		};
+		ABAB4A351A23898B00B1BD18 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				INFOPLIST_FILE = qlgenerator/Info.plist;
+				INSTALL_PATH = /Library/QuickLook;
+				PREBINDING = NO;
+				PRODUCT_NAME = QLdds;
+				WRAPPER_EXTENSION = qlgenerator;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AB8A49DF1A22DBE7002E5A59 /* Build configuration list for PBXProject "QLdds" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AB8A49DD1A22DBE7002E5A59 /* Debug */,
+				AB8A49DE1A22DBE7002E5A59 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AB8A4A0F1A22DD6C002E5A59 /* Build configuration list for PBXNativeTarget "mdimporter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AB8A4A0D1A22DD6C002E5A59 /* Debug */,
+				AB8A4A0E1A22DD6C002E5A59 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ABAB4A361A23898B00B1BD18 /* Build configuration list for PBXNativeTarget "qlgenerator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ABAB4A341A23898B00B1BD18 /* Debug */,
+				ABAB4A351A23898B00B1BD18 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = AB8A49DC1A22DBE7002E5A59 /* Project object */;
+}

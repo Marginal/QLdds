@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
  
 <schema version="1.0" xmlns="http://www.apple.com/metadata"
-                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                      xsi:schemaLocation="http://www.apple.com/metadata file:///System/Library/Frameworks/CoreServices.framework/Frameworks/Metadata.framework/Resources/MetadataSchema.xsd">
-    <types>
-        <type name="com.microsoft.dds">         
-            <allattrs>kMDItemCodecs kMDItemPixelHeight kMDItemPixelWidth</allattrs>
-            <displayattrs>kMDItemCodecs kMDItemPixelHeight kMDItemPixelWidth</displayattrs>
-        </type>
-    </types>
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.apple.com/metadata file:///System/Library/Frameworks/CoreServices.framework/Frameworks/Metadata.framework/Resources/MetadataSchema.xsd">
+	<types>
+		<type name="com.microsoft.dds">
+			<allattrs>
+				kMDItemPixelHeight
+				kMDItemPixelWidth
+				kMDItemCodecs
+				kMDItemLayerNames
+			</allattrs>
+			<displayattrs>
+				kMDItemPixelHeight
+				kMDItemPixelWidth
+				kMDItemCodecs
+				kMDItemLayerNames
+			</displayattrs>
+		</type>
+	</types>
 </schema>
-
