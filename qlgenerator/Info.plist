@@ -78,13 +78,13 @@
 	<key>CFPlugInUnloadFunction</key>
 	<string></string>
 	<key>QLNeedsToBeRunInMainThread</key>
-	<false/>
-	<key>QLPreviewHeight</key>
-	<integer>512</integer>
-	<key>QLPreviewWidth</key>
-	<integer>512</integer>
+	<true/>		<!-- serialize calls to keep helper process's resource usage below QuickLook's limits -->
 	<key>QLSupportsConcurrentRequests</key>
-	<false/>
+	<true/>		<!-- but allow multiple helper processes -->
+	<key>QLPreviewHeight</key>
+	<integer>256</integer>
+	<key>QLPreviewWidth</key>
+	<integer>256</integer>
 	<key>QLThumbnailMinimumSize</key>
 	<integer>16</integer>
 </dict>

@@ -1,15 +1,15 @@
 #include <CoreFoundation/CoreFoundation.h>
 #include <CoreServices/CoreServices.h> 
 #include <ApplicationServices/ApplicationServices.h>
+#include <machine/endian.h>
 
-//	DirectDraw Pixel Format
-#define DDPF_ALPHAPIXELS	0x00000001
-#define DDPF_FOURCC	0x00000004
-#define DDPF_RGB	0x00000040
+#include "SOIL/image_DXT.h"	// For DDS_header and flags
 
-#define D3DFMT_DXT1	0x31545844
 
-Boolean GetMetadataForURL(void* thisInterface, 
+// https://developer.apple.com/library/mac/documentation/Carbon/Conceptual/MDImporters/Concepts/WritingAnImp.html
+// http://msdn.microsoft.com/en-us/library/bb943991
+
+Boolean GetMetadataForURL(void* thisInterface,
 			   CFMutableDictionaryRef attributes, 
 			   CFStringRef contentTypeUTI,
 			   CFURLRef url)
@@ -20,33 +20,45 @@ Boolean GetMetadataForURL(void* thisInterface,
 	CFDataRef data = CGDataProviderCopyData(dataProvider);
 	CGDataProviderRelease(dataProvider);
 	if (!data) return FALSE;
-	
-	const UInt8 *buf = CFDataGetBytePtr(data);
-	int *height= ((int*) buf) + 3;
-	int *width = ((int*) buf) + 4;
-	int *pflags= ((int*) buf) + 20;
 
-	CFStringRef format=NULL;
-	if ((*pflags)&DDPF_FOURCC)
-		format = CFStringCreateWithBytes(kCFAllocatorDefault, buf + 0x54, 4, kCFStringEncodingASCII, false);
-	else if ((*pflags)&DDPF_RGB)
-		format = (*pflags)&DDPF_ALPHAPIXELS ? CFSTR("RGBA") : CFSTR("RGB");
-	if (format)
+	DDS_header *header = (DDS_header *) CFDataGetBytePtr(data);
+	if (CFDataGetLength(data) < sizeof(DDS_header) ||
+		memcmp(&header->dwMagic, "DDS ", 4))
 	{
-		CFArrayRef codecs = CFArrayCreate(kCFAllocatorDefault, (const void **) &format, 1, &kCFTypeArrayCallBacks);
-		CFDictionaryAddValue(attributes, kMDItemCodecs, codecs);
-		CFRelease(format);
-		CFRelease(codecs);
+		CFRelease(data);
+		return FALSE;	/* Not a DDS file! */
 	}
-	
-	CFNumberRef cfheight = CFNumberCreate(kCFAllocatorDefault, kCFNumberIntType, height);
+
+	int ncodecs = 0;
+	CFTypeRef codecs[3];
+	CFStringRef format = NULL;
+	if (header->sPixelFormat.dwFlags & DDPF_FOURCC)
+		codecs[ncodecs++] = format = CFStringCreateWithBytes(kCFAllocatorDefault, (const UInt8 *) &header->sPixelFormat.dwFourCC, 4, kCFStringEncodingASCII, false);
+	else if (header->sPixelFormat.dwFlags & DDPF_RGB)
+		codecs[ncodecs++] = (header->sPixelFormat.dwFlags & DDPF_ALPHAPIXELS) ? CFSTR("RGBA") : CFSTR("RGB");
+	if (header->sCaps.dwCaps2 & DDSCAPS2_CUBEMAP)
+		codecs[ncodecs++] = CFSTR("cubemap");
+	if ((header->dwFlags & DDSD_MIPMAPCOUNT) && header->dwMipMapCount)
+		codecs[ncodecs++] = CFSTR("mipmaps");
+	if (ncodecs)
+	{
+		CFArrayRef cfcodecs = CFArrayCreate(kCFAllocatorDefault, (const void **) codecs, ncodecs, &kCFTypeArrayCallBacks);
+		CFDictionaryAddValue(attributes, kMDItemCodecs, cfcodecs);
+		CFRelease(cfcodecs);
+		if (format)
+			CFRelease(format);
+	}
+
+	int height = OSReadLittleInt32(header, offsetof(DDS_header, dwHeight));
+	CFNumberRef cfheight = CFNumberCreate(kCFAllocatorDefault, kCFNumberIntType, &height);
 	CFDictionaryAddValue(attributes, kMDItemPixelHeight, cfheight);
 	CFRelease(cfheight);
 	
-	CFNumberRef cfwidth = CFNumberCreate(kCFAllocatorDefault, kCFNumberIntType, width);
+	int width = OSReadLittleInt32(header, offsetof(DDS_header, dwWidth));
+	CFNumberRef cfwidth = CFNumberCreate(kCFAllocatorDefault, kCFNumberIntType, &width);
 	CFDictionaryAddValue(attributes, kMDItemPixelWidth, cfwidth);
 	CFRelease(cfwidth);
 
 	CFRelease(data);
-    return TRUE;
+	return TRUE;
 }

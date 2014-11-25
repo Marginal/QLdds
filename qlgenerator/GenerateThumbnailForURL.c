@@ -16,28 +16,44 @@ OSStatus GenerateThumbnailForURL(void *thisInterface, QLThumbnailRequestRef thum
 	if (!dataProvider) return -1;
 	CFDataRef data = CGDataProviderCopyData(dataProvider);
 	CGDataProviderRelease(dataProvider);
-	if (!data) return -1;
+	if (!data) return kQLReturnNoError;
 
 	int width, height, channels;
 	unsigned char* rgbadata = SOIL_load_image_from_memory(CFDataGetBytePtr(data), CFDataGetLength(data), &width, &height, &channels, SOIL_LOAD_RGBA);
     CFRelease(data);
-	if (!rgbadata) return -1;
+	if (!rgbadata || QLThumbnailRequestIsCancelled(thumbnail))
+	{
+		SOIL_free_image_data(rgbadata);
+		return kQLReturnNoError;
+	}
 
+	// Wangle into a CGImage via a CGBitmapContext
 	CGColorSpaceRef rgb = CGColorSpaceCreateDeviceRGB();
 	CGContextRef context = CGBitmapContextCreate(rgbadata, width, height, 8, width * 4, rgb, kCGImageAlphaPremultipliedLast);
-    	CGColorSpaceRelease(rgb);
-	if (!context) return -1;
+	CGColorSpaceRelease(rgb);
+	if (!context || QLThumbnailRequestIsCancelled(thumbnail))
+	{
+		if (context)
+			CGContextRelease(context);
+		SOIL_free_image_data(rgbadata);
+		return kQLReturnNoError;
+	}
 
-	CGImageRef image = CGBitmapContextCreateImage(context);
+	CGImageRef image = CGBitmapContextCreateImage(context);	// copy or copy-on-write
 	CGContextRelease(context);
-	if (!image) return -1;
+	SOIL_free_image_data(rgbadata);
+	if (!image || QLThumbnailRequestIsCancelled(thumbnail))
+	{
+		if (image)
+			CGImageRelease(image);
+		return kQLReturnNoError;
+	}
 
 	/* Add a "DDS" stamp if the thumbnail is not too small */
 	if (maxSize.height > 16)
 	{
-		CFTypeRef keys[1] = {kQLThumbnailPropertyExtensionKey};
-		CFTypeRef values[1] = {CFSTR("DDS")};
-		CFDictionaryRef properties = CFDictionaryCreate(NULL, (const void**)keys, (const void**)values, 1, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+		CFStringRef badge = CFSTR("DDS");
+		CFDictionaryRef properties = CFDictionaryCreate(NULL, (const void **) &kQLThumbnailPropertyExtensionKey, (const void **) &badge, 1, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
 		QLThumbnailRequestSetImage(thumbnail, image, properties);
 		CFRelease(properties);
 	}
@@ -46,7 +62,9 @@ OSStatus GenerateThumbnailForURL(void *thisInterface, QLThumbnailRequestRef thum
 		QLThumbnailRequestSetImage(thumbnail, image, NULL);
 	}
 
-	return noErr;
+	CGImageRelease(image);
+
+	return kQLReturnNoError;
 }
 
 void CancelThumbnailGeneration(void* thisInterface, QLThumbnailRequestRef thumbnail)
