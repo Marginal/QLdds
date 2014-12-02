@@ -22,8 +22,39 @@
 		ABD434D01A2D6DE800ED8B26 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB60480E1A2691E900D39FDE /* Foundation.framework */; };
 		ABD434D21A2D6DF400ED8B26 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB8A4A961A22FAED002E5A59 /* CoreFoundation.framework */; };
 		ABD434D41A2D726A00ED8B26 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABD434D31A2D726A00ED8B26 /* CoreServices.framework */; };
+		ABD435011A2E44B600ED8B26 /* QLdds in CopyFiles */ = {isa = PBXBuildFile; fileRef = ABD434D71A2E3FED00ED8B26 /* QLdds */; };
 		ABF5B48E1A2531E40017F8E9 /* dds.m in Sources */ = {isa = PBXBuildFile; fileRef = ABF5B48C1A2531E40017F8E9 /* dds.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		ABD434FC1A2E448A00ED8B26 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AB8A49DC1A22DBE7002E5A59 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AB8A4A091A22DD6B002E5A59;
+			remoteInfo = mdimporter;
+		};
+		ABD434FE1A2E448A00ED8B26 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AB8A49DC1A22DBE7002E5A59 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ABAB4A301A23898A00B1BD18;
+			remoteInfo = qlgenerator;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		ABD435001A2E44AC00ED8B26 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 6;
+			files = (
+				ABD435011A2E44B600ED8B26 /* QLdds in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		AB36E9971A2E91A100862ADF /* schema.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = schema.xml; path = mdimporter/schema.xml; sourceTree = SOURCE_ROOT; };
@@ -41,6 +72,9 @@
 		AB8A4AD81A22FD09002E5A59 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
 		ABAB4A311A23898A00B1BD18 /* QLdds.qlgenerator */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QLdds.qlgenerator; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABD434D31A2D726A00ED8B26 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
+		ABD434D61A2E3FED00ED8B26 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ABD434D71A2E3FED00ED8B26 /* QLdds */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = QLdds; sourceTree = "<group>"; };
+		ABD434DC1A2E406E00ED8B26 /* QLdds.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QLdds.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABF5B48C1A2531E40017F8E9 /* dds.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = dds.m; sourceTree = "<group>"; };
 		ABF5B48D1A2531E40017F8E9 /* dds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dds.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -74,6 +108,7 @@
 		AB8A49DA1A22DBE7002E5A59 = {
 			isa = PBXGroup;
 			children = (
+				ABD434D51A2E3F7000ED8B26 /* app */,
 				AB8A4A211A22DEDD002E5A59 /* mdimporter */,
 				AB8A4A281A22DF8F002E5A59 /* qlgenerator */,
 				ABF5B48B1A2531AC0017F8E9 /* DDS */,
@@ -87,6 +122,7 @@
 			children = (
 				AB8A4A0A1A22DD6B002E5A59 /* DDS.mdimporter */,
 				ABAB4A311A23898A00B1BD18 /* QLdds.qlgenerator */,
+				ABD434DC1A2E406E00ED8B26 /* QLdds.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -124,6 +160,15 @@
 			);
 			name = "External Frameworks and Libraries";
 			sourceTree = SDKROOT;
+		};
+		ABD434D51A2E3F7000ED8B26 /* app */ = {
+			isa = PBXGroup;
+			children = (
+				ABD434D71A2E3FED00ED8B26 /* QLdds */,
+				ABD434D61A2E3FED00ED8B26 /* Info.plist */,
+			);
+			path = app;
+			sourceTree = "<group>";
 		};
 		ABF5B48B1A2531AC0017F8E9 /* DDS */ = {
 			isa = PBXGroup;
@@ -171,6 +216,23 @@
 			productReference = ABAB4A311A23898A00B1BD18 /* QLdds.qlgenerator */;
 			productType = "com.apple.product-type.bundle";
 		};
+		ABD434DB1A2E406E00ED8B26 /* QLdds */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ABD434F61A2E406F00ED8B26 /* Build configuration list for PBXNativeTarget "QLdds" */;
+			buildPhases = (
+				ABD435001A2E44AC00ED8B26 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				ABD434FD1A2E448A00ED8B26 /* PBXTargetDependency */,
+				ABD434FF1A2E448A00ED8B26 /* PBXTargetDependency */,
+			);
+			name = QLdds;
+			productName = QLdds;
+			productReference = ABD434DC1A2E406E00ED8B26 /* QLdds.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -178,6 +240,11 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0610;
+				TargetAttributes = {
+					ABD434DB1A2E406E00ED8B26 = {
+						CreatedOnToolsVersion = 6.1;
+					};
+				};
 			};
 			buildConfigurationList = AB8A49DF1A22DBE7002E5A59 /* Build configuration list for PBXProject "QLdds" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -188,12 +255,14 @@
 				Japanese,
 				French,
 				German,
+				Base,
 			);
 			mainGroup = AB8A49DA1A22DBE7002E5A59;
 			productRefGroup = AB8A4A0B1A22DD6B002E5A59 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				ABD434DB1A2E406E00ED8B26 /* QLdds */,
 				AB8A4A091A22DD6B002E5A59 /* mdimporter */,
 				ABAB4A301A23898A00B1BD18 /* qlgenerator */,
 			);
@@ -241,6 +310,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		ABD434FD1A2E448A00ED8B26 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AB8A4A091A22DD6B002E5A59 /* mdimporter */;
+			targetProxy = ABD434FC1A2E448A00ED8B26 /* PBXContainerItemProxy */;
+		};
+		ABD434FF1A2E448A00ED8B26 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = ABAB4A301A23898A00B1BD18 /* qlgenerator */;
+			targetProxy = ABD434FE1A2E448A00ED8B26 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		AB8A49DD1A22DBE7002E5A59 /* Debug */ = {
@@ -338,6 +420,22 @@
 			};
 			name = Release;
 		};
+		ABD434F71A2E406F00ED8B26 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = app/Info.plist;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		ABD434F81A2E406F00ED8B26 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = app/Info.plist;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -367,6 +465,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		ABD434F61A2E406F00ED8B26 /* Build configuration list for PBXNativeTarget "QLdds" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ABD434F71A2E406F00ED8B26 /* Debug */,
+				ABD434F81A2E406F00ED8B26 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};

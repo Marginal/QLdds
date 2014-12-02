@@ -2,36 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UTImportedTypeDeclarations</key>
-	<array>
-		<dict>
-			<key>UTTypeDescription</key>
-			<string>DDS image</string>
-			<key>UTTypeConformsTo</key>
-			<array>
-				<string>public.image</string>
-				<string>public.data</string>
-			</array>
-			<key>UTTypeIdentifier</key>
-			<string>com.microsoft.dds</string>
-			<key>UTTypeReferenceURL</key>
-			<string>http://msdn.microsoft.com/en-us/library/bb943990.aspx</string>
-			<key>UTTypeTagSpecification</key>
-			<dict>
-				<key>public.filename-extension</key>
-				<array>
-					<string>dds</string>
-					<string>DDS</string>
-				</array>
-				<key>public.mime-type</key>
-				<array>
-					<string>image/x-dds</string>
-				</array>
-			</dict>
-		</dict>
-	</array>
-	<key>NSHumanReadableCopyright</key>
-	<string>© 2013-2014 Jonathan Harris. Licensed under GPLv2 or later.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleDocumentTypes</key>
@@ -77,6 +47,10 @@
 	</dict>
 	<key>CFPlugInUnloadFunction</key>
 	<string></string>
+	<key>LSMinimumSystemVersion</key>
+	<string>${MACOSX_DEPLOYMENT_TARGET}</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>© 2013-2014 Jonathan Harris. Licensed under GPLv2 or later.</string>
 	<key>QLNeedsToBeRunInMainThread</key>
 	<true/>		<!-- serialize calls to keep helper process's resource usage below QuickLook's limits -->
 	<key>QLSupportsConcurrentRequests</key>

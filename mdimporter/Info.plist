@@ -4,34 +4,6 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
-	<key>UTImportedTypeDeclarations</key>
-	<array>
-		<dict>
-			<key>UTTypeDescription</key>
-			<string>DDS image</string>
-			<key>UTTypeConformsTo</key>
-			<array>
-				<string>public.image</string>
-				<string>public.data</string>
-			</array>
-			<key>UTTypeIdentifier</key>
-			<string>com.microsoft.dds</string>
-			<key>UTTypeReferenceURL</key>
-			<string>http://msdn.microsoft.com/en-us/library/bb943990.aspx</string>
-			<key>UTTypeTagSpecification</key>
-			<dict>
-				<key>public.filename-extension</key>
-				<array>
-					<string>dds</string>
-					<string>DDS</string>
-				</array>
-				<key>public.mime-type</key>
-				<array>
-					<string>image/x-dds</string>
-				</array>
-			</dict>
-		</dict>
-	</array>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -45,8 +17,6 @@
 	</array>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
-	<key>NSHumanReadableCopyright</key>
-	<string>© 2013 Jonathan Harris. Licensed under GPLv2 or later.</string>
 	<key>CFBundleName</key>
 	<string>${PRODUCT_NAME}</string>
 	<key>CFBundleIconFile</key>
@@ -62,7 +32,7 @@
 	<key>CFPlugInDynamicRegisterFunction</key>
 	<string></string>
 	<key>CFPlugInDynamicRegistration</key>
-	<string>NO</string>
+	<false/>
 	<key>CFPlugInFactories</key>
 	<dict>
 		<key>E57C54B1-5783-4A33-9E68-B27C8A408DBF</key>
@@ -77,5 +47,9 @@
 	</dict>
 	<key>CFPlugInUnloadFunction</key>
 	<string></string>
+	<key>LSMinimumSystemVersion</key>
+	<string>${MACOSX_DEPLOYMENT_TARGET}</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>© 2013-2014 Jonathan Harris. Licensed under GPLv2 or later.</string>
 </dict>
 </plist>

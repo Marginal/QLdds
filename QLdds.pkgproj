@@ -51,7 +51,48 @@
 							<array>
 								<dict>
 									<key>CHILDREN</key>
-									<array/>
+									<array>
+										<dict>
+											<key>CHILDREN</key>
+											<array>
+												<dict>
+													<key>BUNDLE_POSTINSTALL_PATH</key>
+													<dict>
+														<key>PATH</key>
+														<string>app/registerapp</string>
+														<key>PATH_TYPE</key>
+														<integer>1</integer>
+													</dict>
+													<key>CHILDREN</key>
+													<array/>
+													<key>GID</key>
+													<integer>0</integer>
+													<key>PATH</key>
+													<string>Build/Release/QLdds.app</string>
+													<key>PATH_TYPE</key>
+													<integer>1</integer>
+													<key>PERMISSIONS</key>
+													<integer>493</integer>
+													<key>TYPE</key>
+													<integer>3</integer>
+													<key>UID</key>
+													<integer>0</integer>
+												</dict>
+											</array>
+											<key>GID</key>
+											<integer>0</integer>
+											<key>PATH</key>
+											<string>QLdds</string>
+											<key>PATH_TYPE</key>
+											<integer>0</integer>
+											<key>PERMISSIONS</key>
+											<integer>493</integer>
+											<key>TYPE</key>
+											<integer>2</integer>
+											<key>UID</key>
+											<integer>0</integer>
+										</dict>
+									</array>
 									<key>GID</key>
 									<integer>80</integer>
 									<key>PATH</key>
@@ -264,7 +305,7 @@
 											<key>BUNDLE_POSTINSTALL_PATH</key>
 											<dict>
 												<key>PATH</key>
-												<string>resetquicklookd</string>
+												<string>qlgenerator/resetquicklookd</string>
 												<key>PATH_TYPE</key>
 												<integer>1</integer>
 											</dict>
@@ -368,7 +409,7 @@
 											<key>BUNDLE_POSTINSTALL_PATH</key>
 											<dict>
 												<key>PATH</key>
-												<string>resetmds</string>
+												<string>mdimporter/resetmds</string>
 												<key>PATH_TYPE</key>
 												<integer>1</integer>
 											</dict>
@@ -742,7 +783,7 @@
 			<key>RESOURCES</key>
 			<array/>
 			<key>ROOT_VOLUME_ONLY</key>
-			<false/>
+			<true/>
 		</dict>
 		<key>PROJECT_SETTINGS</key>
 		<dict>

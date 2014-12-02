@@ -1,0 +1,7 @@
+#!/bin/sh
+touch -c "$2"
+if [ -n "$USER" ]; then
+    # Older versions of OSX don't notice changes in /Library/Application Support, so kick them
+    sudo -u "$USER" /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister "$2"
+fi
+true
