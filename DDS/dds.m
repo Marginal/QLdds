@@ -196,7 +196,8 @@ inline static int maskshift(unsigned int mask)
         ddsfile.length < sizeof(DDS_header) ||
         !(ddsheader = ddsfile.bytes) ||
         OSReadLittleInt32(ddsheader, offsetof(DDS_header, dwMagic)) != DDS_MAGIC ||
-        OSReadLittleInt32(ddsheader, offsetof(DDS_header, dwSize)) + sizeof(DDS_MAGIC) != sizeof(DDS_header))
+        (OSReadLittleInt32(ddsheader, offsetof(DDS_header, dwSize)) + sizeof(DDS_MAGIC) != sizeof(DDS_header) &&
+         OSReadLittleInt32(ddsheader, offsetof(DDS_header, dwSize)) != DDS_MAGIC))  // Some old DX8 files have the magic repeated in the size field
     {
         [self release];
         return nil;
@@ -334,15 +335,17 @@ inline static int maskshift(unsigned int mask)
     else
         return NULL;	// Either DDPF_FOURCC, DDPF_RGB or DDPF_LUMINANCE should be set
 
+    _ddsCaps2 = OSReadLittleInt32(ddsheader, offsetof(DDS_header, sCaps.dwCaps2));
     _mainSurfaceWidth = OSReadLittleInt32(ddsheader, offsetof(DDS_header, dwWidth));
     _mainSurfaceHeight= OSReadLittleInt32(ddsheader, offsetof(DDS_header, dwHeight));
-    if (! (_mainSurfaceDepth = (_ddsCaps2 & DDSCAPS2_VOLUME) && (OSReadLittleInt32(ddsheader, offsetof(DDS_header, sPixelFormat.dwFlags)) & DDSD_DEPTH) ?
-           OSReadLittleInt32(ddsheader, offsetof(DDS_header, dwDepth)) : 1))
-        _mainSurfaceDepth = 1;
+
     // according to http://msdn.microsoft.com/en-us/library/bb943982 we ignore DDSD_MIPMAPCOUNT in dwFlags
-    if (! (_mipmapCount = OSReadLittleInt32(ddsheader, offsetof(DDS_header, dwMipMapCount))))
-        _mipmapCount = 1;	// assume that we always have at least one surface
-    _ddsCaps2 = OSReadLittleInt32(ddsheader, offsetof(DDS_header, sCaps.dwCaps2));
+    _mipmapCount = OSReadLittleInt32(ddsheader, offsetof(DDS_header, dwMipMapCount));
+    if (! _mipmapCount) _mipmapCount = 1;	// assume that we always have at least one surface
+
+    // also ignore DDSD_DEPTH in dwFlags for similar reasons
+    _mainSurfaceDepth = _ddsCaps2 & DDSCAPS2_VOLUME ? OSReadLittleInt32(ddsheader, offsetof(DDS_header, dwDepth)) : 0;
+    if (! _mainSurfaceDepth) _mainSurfaceDepth = 1;
 
     return self;
 }
@@ -437,8 +440,9 @@ inline static int maskshift(unsigned int mask)
         surface_bytes += [self surfaceSize:mipmap++];
 
     // Find smallest mipmap that is the same size or larger than the desired size - QuickLook will scale it down to desired size
+    // This doesn't handle volume textures (which look like http://msdn.microsoft.com/en-us/library/windows/desktop/bb205579)
     mipmap = 1;
-    if (width || height)
+    if ((width || height) && _mainSurfaceDepth==1)
         while (mipmap < _mipmapCount)
         {
             if (img_width / 2 >= width || img_height / 2 >= height)
