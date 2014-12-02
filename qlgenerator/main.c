@@ -24,6 +24,9 @@
 // Don't modify this line
 #define PLUGIN_ID "6F5AB5FD-CC32-4FF4-A3E6-4BA350D8CB7E"
 
+UInt8 premul_table[256][256];    /* Table used for premultiplying alpha */
+
+
 //
 // Below is the generic glue code for all plug-ins.
 //
@@ -91,6 +94,11 @@ static QLGeneratorInterfaceStruct myInterfaceFtbl = {
 //
 QuickLookGeneratorPluginType *AllocQuickLookGeneratorPluginType(CFUUIDRef inFactoryID)
 {
+    /* Build table used for premultiplying alpha */
+    for (int a=0; a<256; a++)
+        for (int c=0; c<256; c++)
+            premul_table[a][c] = (a * c + 0x7f) / 0xff;
+
     QuickLookGeneratorPluginType *theNewInstance;
 
     theNewInstance = (QuickLookGeneratorPluginType *)malloc(sizeof(QuickLookGeneratorPluginType));
