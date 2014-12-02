@@ -9,12 +9,14 @@
 				kMDItemPixelHeight
 				kMDItemPixelWidth
 				kMDItemCodecs
+				kMDItemBitsPerSample
 				kMDItemLayerNames
 			</allattrs>
 			<displayattrs>
 				kMDItemPixelHeight
 				kMDItemPixelWidth
 				kMDItemCodecs
+				kMDItemBitsPerSample
 				kMDItemLayerNames
 			</displayattrs>
 		</type>

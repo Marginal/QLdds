@@ -202,8 +202,10 @@ inline static int maskshift(unsigned int mask)
         return nil;
     }
 
-    unsigned int flags = OSReadLittleInt32(ddsheader, offsetof(DDS_header, sPixelFormat.dwFlags));
-    if (flags & DDPF_FOURCC)
+    // according to http://msdn.microsoft.com/en-us/library/bb943982 we ignore DDSD_PIXELFORMAT in dwFlags and assume that sPixelFormat is valid
+    unsigned int pfflags = OSReadLittleInt32(ddsheader, offsetof(DDS_header, sPixelFormat.dwFlags));
+
+    if (pfflags & DDPF_FOURCC)
     {
         /* DirectX10 header extension */
         if (OSReadLittleInt32(ddsheader, offsetof(DDS_header, sPixelFormat.dwFourCC)) == FOURCC_DX10)
@@ -219,27 +221,22 @@ inline static int maskshift(unsigned int mask)
                 case DXGI_FORMAT_BC1_UNORM:
                     _codec = @"BC1";
                     fourcc = FOURCC_DXT1;
-                    blocksize = 8;
                     break;
                 case DXGI_FORMAT_BC2_UNORM:
                     _codec = @"BC2";
                     fourcc = FOURCC_DXT3;
-                    blocksize = 16;
                     break;
                 case DXGI_FORMAT_BC3_UNORM:
                     _codec = @"BC3";
                     fourcc = FOURCC_DXT5;
-                    blocksize = 16;
                     break;
                 case DXGI_FORMAT_BC4_UNORM:
                     _codec = @"BC4";
                     fourcc = FOURCC_ATI1;
-                    blocksize = 8;
                     break;
                 case DXGI_FORMAT_BC5_UNORM:
                     _codec = @"BC5";
                     fourcc = FOURCC_ATI2;
-                    blocksize = 16;
                     break;
                 default:
                     _codec = @"DX10";
@@ -251,32 +248,47 @@ inline static int maskshift(unsigned int mask)
         {
             _codec = [[[NSString alloc] initWithBytes:(ddsheader + offsetof(DDS_header, sPixelFormat.dwFourCC)) length:4 encoding:NSASCIIStringEncoding] retain];
             fourcc = OSReadLittleInt32(ddsheader, offsetof(DDS_header, sPixelFormat.dwFourCC));
-            if (fourcc==FOURCC_DXT1 || fourcc==FOURCC_ATI1)
-                blocksize = 8;
-            else if (fourcc==FOURCC_DXT2 || fourcc==FOURCC_DXT3 || fourcc==FOURCC_DXT4 || fourcc==FOURCC_DXT5 || fourcc==FOURCC_ATI2)
-                blocksize = 16;
-            else
-                fourcc = FOURCC_UNKNOWN;    // unsupported encoding
             ddsdata = ((unsigned char *) ddsfile.bytes) + sizeof(DDS_header);
         }
-    }
-    else if (flags & (DDPF_RGB|DDPF_LUMINANCE))
-    {
-        pixelsize = OSReadLittleInt32(ddsheader, offsetof(DDS_header, sPixelFormat.dwRGBBitCount)) / 8;
-        if (pixelsize * 8 != OSReadLittleInt32(ddsheader, offsetof(DDS_header, sPixelFormat.dwRGBBitCount)) ||
-            pixelsize == 0 ||
-            pixelsize > 4 )
+
+        switch (fourcc)
         {
-            // non-byte aligned data (shouldn't happen) or too large
-            [self release];
-            return nil;
+            case FOURCC_DXT1:
+                blocksize = 8;
+                _bpp = 16;      // 565
+                break;
+            case FOURCC_DXT2:
+            case FOURCC_DXT3:
+                blocksize = 16;
+                _bpp = 20;      // 565 + 4 bit alpha
+                break;
+            case FOURCC_DXT4:
+            case FOURCC_DXT5:
+                blocksize = 16;
+                _bpp = 24;      // 565 + 8 bit alpha
+                break;
+            case FOURCC_ATI1:
+                blocksize = 8;
+                _bpp = 8;
+                break;
+            case FOURCC_ATI2:
+                blocksize = 16;
+                _bpp = 16;
+                break;
+            default:
+                fourcc = FOURCC_UNKNOWN;    // unsupported encoding
+                break;
         }
-        else if ((flags & (DDPF_LUMINANCE|DDPF_ALPHAPIXELS)) == (DDPF_LUMINANCE|DDPF_ALPHAPIXELS))
+    }
+    else if (pfflags & (DDPF_RGB|DDPF_LUMINANCE))
+    {
+        _bpp = OSReadLittleInt32(ddsheader, offsetof(DDS_header, sPixelFormat.dwRGBBitCount));
+        if ((pfflags & (DDPF_LUMINANCE|DDPF_ALPHAPIXELS)) == (DDPF_LUMINANCE|DDPF_ALPHAPIXELS))
         {
             _codec = @"Luminance + Alpha";
             fourcc = FOURCC_LA;
         }
-        else if (flags & DDPF_LUMINANCE)
+        else if (pfflags & DDPF_LUMINANCE)
         {
             _codec = @"Luminance";
             fourcc = FOURCC_L;
@@ -287,12 +299,12 @@ inline static int maskshift(unsigned int mask)
             _codec = @"Normal map";
             fourcc = FOURCC_RG;
         }
-        else if (flags & DDPF_ALPHAPIXELS)
+        else if (pfflags & DDPF_ALPHAPIXELS)
         {
             _codec = @"RGBA";
             fourcc = FOURCC_RGBA;
         }
-        else if (pixelsize == 32)
+        else if (_bpp == 32)
         {
             // No alpha channel
             _codec = @"RGBX";
@@ -303,10 +315,20 @@ inline static int maskshift(unsigned int mask)
             _codec = @"RGB";
             fourcc = FOURCC_RGB;
         }
-        rmask  = OSReadLittleInt32(ddsheader, offsetof(DDS_header, sPixelFormat.dwRBitMask));
-        gmask  = OSReadLittleInt32(ddsheader, offsetof(DDS_header, sPixelFormat.dwGBitMask));
-        bmask  = OSReadLittleInt32(ddsheader, offsetof(DDS_header, sPixelFormat.dwBBitMask));
-        amask  = OSReadLittleInt32(ddsheader, offsetof(DDS_header, sPixelFormat.dwAlphaBitMask));
+
+        pixelsize = _bpp / 8;
+        if (pixelsize * 8 != _bpp || pixelsize == 0 || pixelsize > 4)
+        {
+            // non-byte aligned data or too large for us
+            fourcc = FOURCC_UNKNOWN;    // unsupported encoding
+        }
+        else
+        {
+            rmask  = OSReadLittleInt32(ddsheader, offsetof(DDS_header, sPixelFormat.dwRBitMask));
+            gmask  = OSReadLittleInt32(ddsheader, offsetof(DDS_header, sPixelFormat.dwGBitMask));
+            bmask  = OSReadLittleInt32(ddsheader, offsetof(DDS_header, sPixelFormat.dwBBitMask));
+            amask  = OSReadLittleInt32(ddsheader, offsetof(DDS_header, sPixelFormat.dwAlphaBitMask));
+        }
         ddsdata = ((unsigned char *) ddsfile.bytes) + sizeof(DDS_header);
     }
     else
@@ -721,5 +743,6 @@ inline static int maskshift(unsigned int mask)
 @synthesize mainSurfaceDepth  = _mainSurfaceDepth;
 @synthesize mipmapCount= _mipmapCount;
 @synthesize ddsCaps2 = _ddsCaps2;
+@synthesize bpp = _bpp;
 
 @end

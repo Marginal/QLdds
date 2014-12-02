@@ -46,6 +46,8 @@ Boolean GetMetadataForURL(void* thisInterface,
 
     [attrs setValue:[NSNumber numberWithInt:dds.mainSurfaceWidth]  forKey:(NSString *)kMDItemPixelWidth];
     [attrs setValue:[NSNumber numberWithInt:dds.mainSurfaceHeight] forKey:(NSString *)kMDItemPixelHeight];
+    if (dds.bpp)
+        [attrs setValue:[NSNumber numberWithInt:dds.bpp] forKey:(NSString *)kMDItemBitsPerSample];
 
     [pool release];
     return TRUE;

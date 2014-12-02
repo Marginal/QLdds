@@ -116,7 +116,7 @@ typedef struct {
     unsigned int fourcc;            // FourCC code for recognised types
     NSString *_codec;               // Human-readable name of codec
     int _mainSurfaceWidth, _mainSurfaceHeight, _mainSurfaceDepth;   // image dimensions
-    int _mipmapCount, _ddsCaps2;
+    int _mipmapCount, _ddsCaps2, _bpp;
     int blocksize;                  // BCn block size for compressed images
     int pixelsize;                  // size in bytes for uncompressed images
     int amask, bmask, gmask, rmask; // channel masks for uncompressed images
@@ -136,6 +136,7 @@ typedef struct {
 @property (nonatomic,assign,readonly) int mainSurfaceDepth;
 @property (nonatomic,assign,readonly) int mipmapCount;
 @property (nonatomic,assign,readonly) int ddsCaps2;
+@property (nonatomic,assign,readonly) int bpp;
 
 @end
 
