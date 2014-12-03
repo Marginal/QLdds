@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		AB2612271A27F0BA0050B3AA /* dds.m in Sources */ = {isa = PBXBuildFile; fileRef = ABF5B48C1A2531E40017F8E9 /* dds.m */; };
 		AB36E9991A2E91BE00862ADF /* schema.xml in Resources */ = {isa = PBXBuildFile; fileRef = AB36E9971A2E91A100862ADF /* schema.xml */; };
+		AB36E99C1A2EBF2500862ADF /* schema.strings in Resources */ = {isa = PBXBuildFile; fileRef = AB36E99A1A2EBF2500862ADF /* schema.strings */; };
 		AB8A4A251A22DF1D002E5A59 /* GetMetadataForFile.m in Sources */ = {isa = PBXBuildFile; fileRef = AB8A4A221A22DF1D002E5A59 /* GetMetadataForFile.m */; };
 		AB8A4A271A22DF1D002E5A59 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = AB8A4A241A22DF1D002E5A59 /* main.c */; };
 		ABAB4A381A238A7B00B1BD18 /* GenerateThumbnailForURL.m in Sources */ = {isa = PBXBuildFile; fileRef = AB8A4A2E1A22DFB6002E5A59 /* GenerateThumbnailForURL.m */; };
@@ -57,7 +58,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		AB36E9971A2E91A100862ADF /* schema.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = schema.xml; path = mdimporter/schema.xml; sourceTree = SOURCE_ROOT; };
+		AB36E9971A2E91A100862ADF /* schema.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = schema.xml; sourceTree = "<group>"; };
+		AB36E99B1A2EBF2500862ADF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/schema.strings; sourceTree = "<group>"; };
 		AB60480E1A2691E900D39FDE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		AB8A4A0A1A22DD6B002E5A59 /* DDS.mdimporter */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DDS.mdimporter; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB8A4A221A22DF1D002E5A59 /* GetMetadataForFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetMetadataForFile.m; sourceTree = "<group>"; };
@@ -105,6 +107,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AB899C8A1A2F4E1000EAB3EA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				AB36E9971A2E91A100862ADF /* schema.xml */,
+				AB36E99A1A2EBF2500862ADF /* schema.strings */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		AB8A49DA1A22DBE7002E5A59 = {
 			isa = PBXGroup;
 			children = (
@@ -132,8 +143,8 @@
 			children = (
 				AB8A4A221A22DF1D002E5A59 /* GetMetadataForFile.m */,
 				AB8A4A241A22DF1D002E5A59 /* main.c */,
-				AB36E9971A2E91A100862ADF /* schema.xml */,
 				AB8A4A231A22DF1D002E5A59 /* Info.plist */,
+				AB899C8A1A2F4E1000EAB3EA /* Resources */,
 			);
 			path = mdimporter;
 			sourceTree = "<group>";
@@ -251,11 +262,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
-				Japanese,
-				French,
-				German,
-				Base,
+				en,
 			);
 			mainGroup = AB8A49DA1A22DBE7002E5A59;
 			productRefGroup = AB8A4A0B1A22DD6B002E5A59 /* Products */;
@@ -275,6 +282,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AB36E9991A2E91BE00862ADF /* schema.xml in Resources */,
+				AB36E99C1A2EBF2500862ADF /* schema.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -323,6 +331,17 @@
 			targetProxy = ABD434FE1A2E448A00ED8B26 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		AB36E99A1A2EBF2500862ADF /* schema.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AB36E99B1A2EBF2500862ADF /* en */,
+			);
+			name = schema.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		AB8A49DD1A22DBE7002E5A59 /* Debug */ = {
@@ -473,6 +492,7 @@
 				ABD434F81A2E406F00ED8B26 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
