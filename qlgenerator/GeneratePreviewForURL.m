@@ -43,7 +43,7 @@ OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview,
     }
 
     // Replace title string
-    NSString *title = [NSString stringWithFormat:@"%@ (%dx%d %@)", [(NSURL *)url lastPathComponent],
+    NSString *title = [NSString stringWithFormat:@"%@ (%d×%d %@)", [(NSURL *)url lastPathComponent],
                        dds.mainSurfaceWidth, dds.mainSurfaceHeight, dds.codec];
     NSDictionary *properties = [NSDictionary dictionaryWithObject:title forKey:(NSString *) kQLPreviewPropertyDisplayNameKey];
 
