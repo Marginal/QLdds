@@ -4,6 +4,10 @@
 
 #include "DDS/dds.h"
 
+// Undocumented options
+const CFStringRef kQLThumbnailOptionScaleFactor     = CFSTR("QLThumbnailOptionScaleFactor");
+
+
 /* -----------------------------------------------------------------------------
     Generate a thumbnail for file
 
@@ -21,7 +25,10 @@ OSStatus GenerateThumbnailForURL(void *thisInterface, QLThumbnailRequestRef thum
         return kQLReturnNoError;
     }
 
-    CGImageRef image = [dds CreateImageWithPreferredWidth:maxSize.width andPreferredHeight:maxSize.height];   // use a lower-level mipmap
+    NSNumber *scaleFactor = [((NSDictionary *)options) valueForKey:(NSString *)kQLThumbnailOptionScaleFactor];  // can be >1 on Retina displays
+    CGSize desired = scaleFactor.boolValue ? CGSizeMake(maxSize.width * scaleFactor.floatValue, maxSize.height * scaleFactor.floatValue) :CGSizeMake(maxSize.width, maxSize.height);
+
+    CGImageRef image = [dds CreateImageWithPreferredWidth:desired.width andPreferredHeight:desired.height];     // use a lower-level mipmap
     if (!image || QLThumbnailRequestIsCancelled(thumbnail))
     {
         if (image)
