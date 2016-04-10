@@ -3,9 +3,6 @@
 
 #include "dds.h"
 
-/* Lookup table for premultiplying alpha without having to do multiplication and division */
-extern const UInt8 premul_table[256][256];
-
 
 // FOURCC codes that we know how to deal with
 typedef enum {
@@ -128,12 +125,18 @@ inline static void makeLuminancePalette(UInt64 a01, UInt8 p[8])
 
 
 // Premultiply alpha in-place
+#define DIVIDE_BY_255(v) (((((unsigned)(v)) << 8) + ((unsigned)(v)) + 255) >> 16)
+
 inline static Color32 premultiply(Color32 c)
 {
-    const UInt8 *premula = premul_table[c.a];
-    c.r = premula[c.r];
-    c.g = premula[c.g];
-    c.b = premula[c.b];
+    if (c.a == 0)
+        c.u = 0;     // Transparent
+    else if (c.a != 0xff)
+    {
+        c.r = DIVIDE_BY_255(c.r * c.a);
+        c.g = DIVIDE_BY_255(c.g * c.a);
+        c.b = DIVIDE_BY_255(c.b * c.a);
+    }
     return c;
 }
 

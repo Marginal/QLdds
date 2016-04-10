@@ -9,8 +9,6 @@
 // https://developer.apple.com/library/mac/documentation/Carbon/Conceptual/MDImporters/Concepts/WritingAnImp.html
 // http://msdn.microsoft.com/en-us/library/bb943991
 
-UInt8 *premul_table;    /* Not used but must exist for linkage */
-
 
 Boolean GetMetadataForURL(void* thisInterface,
 			   CFMutableDictionaryRef attributes, 
