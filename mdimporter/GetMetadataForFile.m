@@ -17,38 +17,36 @@ Boolean GetMetadataForURL(void* thisInterface,
 			   CFStringRef contentTypeUTI,
 			   CFURLRef url)
 {
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
-    DDS *dds = [DDS ddsWithURL: (NSURL*) url];
-    if (!dds)
+    @autoreleasepool
     {
-        [pool release];
-        return FALSE;	/* Not a DDS file! */
+
+        DDS *dds = [DDS ddsWithURL: (__bridge NSURL*) url];
+        if (!dds)
+            return FALSE;	/* Not a DDS file! */
+
+        NSMutableDictionary *attrs = (__bridge NSMutableDictionary *)attributes;   // Prefer to use Objective-C
+
+        [attrs setValue:[NSArray arrayWithObject:dds.codec] forKey:(NSString *)kMDItemCodecs];
+
+        int nlayers = 0;
+        NSObject *layers[2];
+        int ddsCaps2 = dds.ddsCaps2;
+        if (ddsCaps2 & DDSCAPS2_VOLUME)
+            layers[nlayers++] = @"volume";
+        else if ((ddsCaps2 & DDSCAPS2_CUBEMAP_ALLFACES) == DDSCAPS2_CUBEMAP_ALLFACES)
+            layers[nlayers++] = @"cubemap";
+        else if (ddsCaps2 & DDSCAPS2_CUBEMAP)
+            layers[nlayers++] = @"partial cubemap";
+        if (dds.mipmapCount > 1)
+            layers[nlayers++] = @"mipmaps";
+        if (nlayers)
+            [attrs setValue:[NSArray arrayWithObjects:layers count:nlayers] forKey:(NSString *)kMDItemLayerNames];
+
+        [attrs setValue:[NSNumber numberWithInt:dds.mainSurfaceWidth]  forKey:(NSString *)kMDItemPixelWidth];
+        [attrs setValue:[NSNumber numberWithInt:dds.mainSurfaceHeight] forKey:(NSString *)kMDItemPixelHeight];
+        if (dds.bpp)
+            [attrs setValue:[NSNumber numberWithInt:dds.bpp] forKey:(NSString *)kMDItemBitsPerSample];
+
     }
-
-    NSMutableDictionary *attrs = (NSMutableDictionary *)attributes;   // Prefer to use Objective-C
-
-    [attrs setValue:[NSArray arrayWithObject:dds.codec] forKey:(NSString *)kMDItemCodecs];
-
-	int nlayers = 0;
-	NSObject *layers[2];
-    int ddsCaps2 = dds.ddsCaps2;
-	if (ddsCaps2 & DDSCAPS2_VOLUME)
-		layers[nlayers++] = @"volume";
-	else if ((ddsCaps2 & DDSCAPS2_CUBEMAP_ALLFACES) == DDSCAPS2_CUBEMAP_ALLFACES)
-		layers[nlayers++] = @"cubemap";
-	else if (ddsCaps2 & DDSCAPS2_CUBEMAP)
-		layers[nlayers++] = @"partial cubemap";
-	if (dds.mipmapCount > 1)
-		layers[nlayers++] = @"mipmaps";
-	if (nlayers)
-        [attrs setValue:[NSArray arrayWithObjects:layers count:nlayers] forKey:(NSString *)kMDItemLayerNames];
-
-    [attrs setValue:[NSNumber numberWithInt:dds.mainSurfaceWidth]  forKey:(NSString *)kMDItemPixelWidth];
-    [attrs setValue:[NSNumber numberWithInt:dds.mainSurfaceHeight] forKey:(NSString *)kMDItemPixelHeight];
-    if (dds.bpp)
-        [attrs setValue:[NSNumber numberWithInt:dds.bpp] forKey:(NSString *)kMDItemBitsPerSample];
-
-    [pool release];
     return TRUE;
 }

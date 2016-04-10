@@ -192,16 +192,14 @@ inline static int maskshift(unsigned int mask)
         return nil;
 
     char const *ddsheader;
-    if (!(ddsfile = [[NSData dataWithContentsOfURL:url] retain]) ||
+    NSError *error;
+    if (!(ddsfile = [NSData dataWithContentsOfURL:url options:NSDataReadingMappedAlways error:&error]) ||
         ddsfile.length < sizeof(DDS_header) ||
         !(ddsheader = ddsfile.bytes) ||
         OSReadLittleInt32(ddsheader, offsetof(DDS_header, dwMagic)) != DDS_MAGIC ||
         (OSReadLittleInt32(ddsheader, offsetof(DDS_header, dwSize)) + sizeof(DDS_MAGIC) != sizeof(DDS_header) &&
          OSReadLittleInt32(ddsheader, offsetof(DDS_header, dwSize)) != DDS_MAGIC))  // Some old DX8 files have the magic repeated in the size field
-    {
-        [self release];
         return nil;
-    }
 
     // according to http://msdn.microsoft.com/en-us/library/bb943982 we ignore DDSD_PIXELFORMAT in dwFlags and assume that sPixelFormat is valid
     unsigned int pfflags = OSReadLittleInt32(ddsheader, offsetof(DDS_header, sPixelFormat.dwFlags));
@@ -212,10 +210,8 @@ inline static int maskshift(unsigned int mask)
         if (OSReadLittleInt32(ddsheader, offsetof(DDS_header, sPixelFormat.dwFourCC)) == FOURCC_DX10)
         {
             if (ddsfile.length < sizeof(DDS_header_DXT10))
-            {
-                [self release];
                 return nil;
-            }
+
             // Map DXGI formats that we know how to deal with to the corresponding FourCC code
             switch (OSReadLittleInt32(ddsheader, offsetof(DDS_header_DXT10, dxgiFormat)))
             {
@@ -247,7 +243,7 @@ inline static int maskshift(unsigned int mask)
         }
         else
         {
-            _codec = [[[NSString alloc] initWithBytes:(ddsheader + offsetof(DDS_header, sPixelFormat.dwFourCC)) length:4 encoding:NSASCIIStringEncoding] retain];
+            _codec = [[NSString alloc] initWithBytes:(ddsheader + offsetof(DDS_header, sPixelFormat.dwFourCC)) length:4 encoding:NSASCIIStringEncoding];
             fourcc = OSReadLittleInt32(ddsheader, offsetof(DDS_header, sPixelFormat.dwFourCC));
             ddsdata = ((unsigned char *) ddsfile.bytes) + sizeof(DDS_header);
         }
@@ -353,16 +349,9 @@ inline static int maskshift(unsigned int mask)
 + (id) ddsWithURL: (NSURL *) url
 {
     DDS* dds = [[DDS alloc] initWithURL:url];
-    return [dds autorelease];
+    return dds;
 }
 
-- (void) dealloc
-{
-    // release members here
-    [_codec release];
-    [ddsfile release];
-    [super dealloc];
-}
 
 - (CGImageRef) CreateImage
 {

@@ -130,7 +130,7 @@ typedef struct {
 - (CGImageRef) CreateImageWithPreferredWidth:(int)width andPreferredHeight:(int)height;
 - (void) DrawSurfaceWithDataAt:(const UInt8 *)src andWidth:(int)width andHeight:(int)height To:(UInt32 *)dst withStride:(int)stride;
 
-@property (nonatomic,retain,readonly) NSString *codec;
+@property (nonatomic,strong,readonly) NSString *codec;
 @property (nonatomic,assign,readonly) int mainSurfaceWidth;
 @property (nonatomic,assign,readonly) int mainSurfaceHeight;
 @property (nonatomic,assign,readonly) int mainSurfaceDepth;

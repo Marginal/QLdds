@@ -250,10 +250,11 @@
 		AB8A49DC1A22DBE7002E5A59 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0720;
 				TargetAttributes = {
 					ABD434DB1A2E406E00ED8B26 = {
 						CreatedOnToolsVersion = 6.1;
+						DevelopmentTeam = R8954VZGV2;
 					};
 				};
 			};
@@ -347,17 +348,21 @@
 		AB8A49DD1A22DBE7002E5A59 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc7400,
-					"$(ARCHS_STANDARD_32_64_BIT)",
-				);
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CODE_SIGN_IDENTITY = "Developer ID Application: Jonathan Harris";
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_PASCAL_STRINGS = NO;
 				GCC_FAST_MATH = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)";
-				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
 				WARNING_CFLAGS = "-Winline";
 			};
 			name = Debug;
@@ -365,18 +370,20 @@
 		AB8A49DE1A22DBE7002E5A59 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc7400,
-					"$(ARCHS_STANDARD_32_64_BIT)",
-				);
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CODE_SIGN_IDENTITY = "Developer ID Application: Jonathan Harris";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_PASCAL_STRINGS = NO;
 				GCC_FAST_MATH = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = NDEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_UNROLL_LOOPS = YES;
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)";
-				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				WARNING_CFLAGS = "-Winline";
 			};
 			name = Release;
@@ -391,6 +398,7 @@
 				INFOPLIST_FILE = mdimporter/Info.plist;
 				INSTALL_PATH = /Library/Spotlight;
 				PREBINDING = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = uk.org.marginal.qldds.mdimporter;
 				PRODUCT_NAME = DDS;
 				WRAPPER_EXTENSION = mdimporter;
 			};
@@ -404,6 +412,7 @@
 				INFOPLIST_FILE = mdimporter/Info.plist;
 				INSTALL_PATH = /Library/Spotlight;
 				PREBINDING = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = uk.org.marginal.qldds.mdimporter;
 				PRODUCT_NAME = DDS;
 				WRAPPER_EXTENSION = mdimporter;
 				ZERO_LINK = NO;
@@ -420,6 +429,7 @@
 				INFOPLIST_FILE = qlgenerator/Info.plist;
 				INSTALL_PATH = /Library/QuickLook;
 				PREBINDING = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = uk.org.marginal.qldds.qlgenerator;
 				PRODUCT_NAME = QLdds;
 				WRAPPER_EXTENSION = qlgenerator;
 			};
@@ -433,6 +443,7 @@
 				INFOPLIST_FILE = qlgenerator/Info.plist;
 				INSTALL_PATH = /Library/QuickLook;
 				PREBINDING = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = uk.org.marginal.qldds.qlgenerator;
 				PRODUCT_NAME = QLdds;
 				WRAPPER_EXTENSION = qlgenerator;
 				ZERO_LINK = NO;
@@ -442,7 +453,9 @@
 		ABD434F71A2E406F00ED8B26 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = app/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = uk.org.marginal.qldds;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -450,7 +463,9 @@
 		ABD434F81A2E406F00ED8B26 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = app/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = uk.org.marginal.qldds;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

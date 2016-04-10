@@ -219,7 +219,7 @@ ULONG MetadataImporterPluginRelease(void *thisInstance)
 // -----------------------------------------------------------------------------
 //	Implementation of the factory function for this type.
 //
-void *MetadataImporterPluginFactory(CFAllocatorRef allocator,CFUUIDRef typeID)
+__attribute__((visibility("default"))) void *MetadataImporterPluginFactory(CFAllocatorRef allocator,CFUUIDRef typeID)
 {
     MetadataImporterPluginType *result;
     CFUUIDRef                 uuid;
