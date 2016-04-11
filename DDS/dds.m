@@ -25,7 +25,11 @@ typedef enum {
     FOURCC_LA         = 0x2020414c,
 } FourCC;
 
-const unsigned int DDS_MAGIC   = 0x20534444;	// "DDS "
+static const unsigned int DDS_MAGIC   = 0x20534444;	// "DDS "
+
+
+// The order of surfaces in a cubemap is  +x, -x, +y,-y, +z,-z according to http://msdn.microsoft.com/en-gb/library/windows/desktop/bb205577
+static const unsigned int surface_order[6] = { DDSCAPS2_CUBEMAP_POSITIVEX,DDSCAPS2_CUBEMAP_NEGATIVEX, DDSCAPS2_CUBEMAP_POSITIVEY, DDSCAPS2_CUBEMAP_NEGATIVEY, DDSCAPS2_CUBEMAP_POSITIVEZ, DDSCAPS2_CUBEMAP_NEGATIVEZ };
 
 
 // Hopefully most efficient CGBitmapContext byte ordering: http://lists.apple.com/archives/quartz-dev/2012/Mar/msg00013.html
@@ -124,23 +128,6 @@ inline static void makeLuminancePalette(UInt64 a01, UInt8 p[8])
 }
 
 
-// Premultiply alpha in-place
-#define DIVIDE_BY_255(v) (((((unsigned)(v)) << 8) + ((unsigned)(v)) + 255) >> 16)
-
-inline static Color32 premultiply(Color32 c)
-{
-    if (c.a == 0)
-        c.u = 0;     // Transparent
-    else if (c.a != 0xff)
-    {
-        c.r = DIVIDE_BY_255(c.r * c.a);
-        c.g = DIVIDE_BY_255(c.g * c.a);
-        c.b = DIVIDE_BY_255(c.b * c.a);
-    }
-    return c;
-}
-
-
 // Compute normal in Blue channel in-place from Red and Green channels
 // Assumes Blender convention: http://wiki.blender.org/index.php/Doc:2.6/Manual/Textures/Influence/Material/Bump_and_Normal
 inline static void computeColor32NormalB(Color32 c)
@@ -184,10 +171,17 @@ inline static int maskshift(unsigned int mask)
 
 
 @interface DDS()
+- (int) surfaceSize;
 - (int) surfaceSize: (int) mipmapLevel;
 @end
 
 @implementation DDS
+
+// Include different versions of decode.c
+#define PREMULTIPLY
+#include "decode.m"
+#undef PREMULTIPLY
+#include "decode.m"
 
 - (id) initWithURL: (NSURL *) url
 {
@@ -338,6 +332,18 @@ inline static int maskshift(unsigned int mask)
     _mainSurfaceWidth = OSReadLittleInt32(ddsheader, offsetof(DDS_header, dwWidth));
     _mainSurfaceHeight= OSReadLittleInt32(ddsheader, offsetof(DDS_header, dwHeight));
 
+    if (!(_ddsCaps2 & DDSCAPS2_CUBEMAP))
+        _surfaceCount = 1;
+    else
+    {
+        _surfaceCount = 0;
+        for (int i=0; i<6; i++)
+            if (_ddsCaps2 & surface_order[i])
+                _surfaceCount++;
+        if (!_surfaceCount)
+            _surfaceCount = 1;
+    }
+
     // according to http://msdn.microsoft.com/en-us/library/bb943982 we ignore DDSD_MIPMAPCOUNT in dwFlags
     _mipmapCount = OSReadLittleInt32(ddsheader, offsetof(DDS_header, dwMipMapCount));
     if (! _mipmapCount) _mipmapCount = 1;	// assume that we always have at least one surface
@@ -345,6 +351,10 @@ inline static int maskshift(unsigned int mask)
     // also ignore DDSD_DEPTH in dwFlags for similar reasons
     _mainSurfaceDepth = _ddsCaps2 & DDSCAPS2_VOLUME ? OSReadLittleInt32(ddsheader, offsetof(DDS_header, dwDepth)) : 0;
     if (! _mainSurfaceDepth) _mainSurfaceDepth = 1;
+
+    // Check file not truncated
+    if (ddsfile.length < _surfaceCount * [self surfaceSize] + (ddsdata - (unsigned char *) ddsfile.bytes))
+        return nil;
 
     return self;
 }
@@ -368,7 +378,6 @@ inline static int maskshift(unsigned int mask)
 
     const unsigned char *data_ptr = ddsdata;
 
-    int surface_count;                  // number of surfaces we're doing
     const int (*surface_layout)[2];     // position of each surface in the image [x, y]
     const int surface_layout_one [1][2] = { { 0, 0 } };
     const int surface_layout_full[6][2] = { { 2, 1 }, { 0, 1 }, { 1, 0 }, { 1, 2 }, { 1, 1 }, { 3, 1 } };
@@ -379,9 +388,8 @@ inline static int maskshift(unsigned int mask)
 
     int img_width, img_height;  // dimensions of generated image
 
-    if (!(_ddsCaps2 & DDSCAPS2_CUBEMAP))
+    if (_surfaceCount == 1)
     {
-        surface_count = 1;
         surface_layout = surface_layout_one;
         img_width  = surface_width;
         img_height = surface_height;
@@ -390,15 +398,11 @@ inline static int maskshift(unsigned int mask)
     {
         // cubemap
 
-        // The order of surfaces in the file is  +x, -x, +y,-y, +z,-z according to http://msdn.microsoft.com/en-gb/library/windows/desktop/bb205577
-        const unsigned int surface_order[6] = { DDSCAPS2_CUBEMAP_POSITIVEX,DDSCAPS2_CUBEMAP_NEGATIVEX, DDSCAPS2_CUBEMAP_POSITIVEY, DDSCAPS2_CUBEMAP_NEGATIVEY, DDSCAPS2_CUBEMAP_POSITIVEZ, DDSCAPS2_CUBEMAP_NEGATIVEZ };
-
         if ((_ddsCaps2 & DDSCAPS2_CUBEMAP_ALLFACES) == DDSCAPS2_CUBEMAP_ALLFACES)
         {
             //                        +y
             // We present them as: -x +z +x -z
             //                        -y
-            surface_count = 6;
             surface_layout = surface_layout_full;
             img_width  = surface_width * 4;
             img_height = surface_height * 3;
@@ -407,7 +411,6 @@ inline static int maskshift(unsigned int mask)
         {
             //                             +y
             // Only the positive surfaces: +z +x
-            surface_count = 3;
             surface_layout = surface_layout_half;
             img_width  = surface_width * 2;
             img_height = surface_height * 2;
@@ -415,25 +418,15 @@ inline static int maskshift(unsigned int mask)
         else
         {
             // Some random selection of surfaces. Present them as they come.
-            surface_count = 0;
-            for (int i=0; i<6; i++)
-                if (_ddsCaps2 & surface_order[i])
-                    surface_count++;
-            if (!surface_count) return NULL;    // eh?
             surface_layout = surface_layout_seqn;
-            img_width  = surface_width * surface_count;
+            img_width  = surface_width * _surfaceCount;
             img_height = surface_height;
         }
     }
 
-    int surface_bytes = 0;  // size of each surface, including lower-level mipmaps
-    int mipmap = 1;
-    while (mipmap <= _mipmapCount)
-        surface_bytes += [self surfaceSize:mipmap++];
-
     // Find smallest mipmap that is the same size or larger than the desired size - QuickLook will scale it down to desired size
-    // This doesn't handle volume textures (which look like http://msdn.microsoft.com/en-us/library/windows/desktop/bb205579)
-    mipmap = 1;
+    // This doesn't handle volume textures (which look like http://msdn.microsoft.com/en-us/library/windows/desktop/bb205579 )
+    int mipmap = 0;
     if ((width || height) && _mainSurfaceDepth==1)
         while (mipmap < _mipmapCount)
         {
@@ -443,7 +436,6 @@ inline static int maskshift(unsigned int mask)
                 if (! (surface_height/= 2)) surface_height= 1;
                 if (! (img_width /= 2)) img_width = 1;
                 if (! (img_height/= 2)) img_height= 1;
-                data_ptr += [self surfaceSize:mipmap];
                 mipmap ++;
             }
             else
@@ -452,14 +444,16 @@ inline static int maskshift(unsigned int mask)
 
     // Draw
     UInt32 *img_data;
-    if (! (img_data = calloc(img_width * img_height, 4))) // Allocate zeroed data so bits we don't write to are transparent
+    if (!(img_data = (_surfaceCount > 1) ?
+          calloc(img_width * img_height, 4) :  // Allocate zeroed data so bits we don't write to are transparent
+          malloc(img_width * img_height * 4)))
         return NULL;
-    for (int surface_num = 0; surface_num < surface_count; surface_num++)
+
+    for (int surface_num = 0; surface_num < _surfaceCount; surface_num++)
         {
             UInt32 *dst = img_data + surface_width * (*surface_layout)[0] + img_width * surface_height * (*surface_layout)[1];
-            [self DrawSurfaceWithDataAt:data_ptr andWidth:surface_width andHeight:surface_height To:dst withStride:img_width];
+            [self DecodeSurfacePremultiplied:surface_num atLevel:(int)mipmap To:dst withStride:img_width];
             surface_layout ++;
-            data_ptr += surface_bytes;
         }
 
     // Wangle into a CGImage via a CGBitmapContext
@@ -482,256 +476,47 @@ inline static int maskshift(unsigned int mask)
 }
 
 
-// Draw a DDS surface into an ARGB bitmap.
-// src points to the DDS surface data [bytes]. width and height specify the dimensions of the surface.
-// dst points to the target bitmap [pixels]. stride specifies the width of the target bitmap [pixels].
-- (void) DrawSurfaceWithDataAt:(const UInt8 *)src andWidth:(int)width andHeight:(int)height To:(UInt32 *)dst withStride:(int)stride
+// Size in bytes of one surface (including any mipmaps)
+- (int) surfaceSize
 {
-    if (blocksize)
-    {
-        // See http://msdn.microsoft.com/en-us/library/bb694531 for descriptions of compression scheme
-
-        for (int y=0; y < height; y += 4)
-        {
-            Color32 c = { -1 }; // output pixel color
-            Color32 p[4] = { -1, -1, -1, -1 };  // Color palette for DXT1-DXT5
-
-            if (fourcc == FOURCC_DXT1)  // 1bit alpha
-                for (int x=0; x < width; x += 4)
-                {
-                    makeColor32Palette(OSReadLittleInt32(src, 0), p);
-                    UInt32 c_idx = OSReadLittleInt32(src, 4);
-
-                    for (int yy = 0; yy < 4*stride; yy += stride)
-                        for (int xx = 0; xx < 4; xx++)
-                        {
-                            dst[yy + xx] = p[c_idx & 3].u;
-                            c_idx >>= 2;
-                        }
-                    dst += 4; // next 4x4 block
-                    src += blocksize;
-                }
-
-            else if (fourcc == FOURCC_DXT2) // premultiplied alpha
-                for (int x=0; x < width; x += 4)
-                {
-                    UInt64 alpha = OSReadLittleInt64(src, 0);
-                    makeColor32Palette(OSReadLittleInt32(src, 8), p);
-                    UInt32 c_idx = OSReadLittleInt32(src, 12);
-
-                    for (int yy = 0; yy < 4*stride; yy += stride)
-                        for (int xx = 0; xx < 4; xx++)
-                        {
-                            c.u = p[c_idx & 3].u;
-                            c.a = (alpha & 0xf) | ((alpha & 0xf) << 4);    // extend
-                            dst[yy + xx] = c.u;
-                            c_idx >>= 2;
-                            alpha >>= 4;
-                        }
-                    dst += 4; // next 4x4 block
-                    src += blocksize;
-                }
-
-            else if (fourcc == FOURCC_DXT3)
-                for (int x=0; x < width; x += 4)
-                {
-                    UInt64 alpha = OSReadLittleInt64(src, 0);
-                    makeColor32Palette(OSReadLittleInt32(src, 8), p);
-                    UInt32 c_idx = OSReadLittleInt32(src, 12);
-
-                    for (int yy = 0; yy < 4*stride; yy += stride)
-                        for (int xx = 0; xx < 4; xx++)
-                        {
-                            c.u = p[c_idx & 3].u;
-                            c.a = (alpha & 0xf) | ((alpha & 0xf) << 4);    // extend
-                            dst[yy + xx] = premultiply(c).u;
-                            c_idx >>= 2;
-                            alpha >>= 4;
-                        }
-                    dst += 4; // next 4x4 block
-                    src += blocksize;
-                }
-
-            else if (fourcc == FOURCC_DXT4) // premultiplied alpha
-                for (int x=0; x < width; x += 4)
-                {
-                    UInt8 lum[8];
-                    UInt64 alpha = OSReadLittleInt64(src, 0);
-                    makeLuminancePalette(alpha, lum);
-                    alpha >>= 16;
-                    makeColor32Palette(OSReadLittleInt32(src, 8), p);
-                    UInt32 c_idx = OSReadLittleInt32(src, 12);
-
-                    for (int yy = 0; yy < 4*stride; yy += stride)
-                        for (int xx = 0; xx < 4; xx++)
-                        {
-                            c.u = p[c_idx & 3].u;
-                            c.a = lum[alpha & 0x7];
-                            dst[yy + xx] = c.u;
-                            c_idx >>= 2;
-                            alpha >>= 3;
-                        }
-                    dst += 4; // next 4x4 block
-                    src += blocksize;
-                }
-
-            else if (fourcc == FOURCC_DXT5)
-                for (int x=0; x < width; x += 4)
-                {
-                    UInt8 lum[8];
-                    UInt64 a_idx = OSReadLittleInt64(src, 0);
-                    makeLuminancePalette(a_idx, lum);
-                    a_idx >>= 16;
-                    makeColor32Palette(OSReadLittleInt32(src, 8), p);
-                    UInt32 c_idx = OSReadLittleInt32(src, 12);
-
-                    for (int yy = 0; yy < 4*stride; yy += stride)
-                        for (int xx = 0; xx < 4; xx++)
-                        {
-                            c.u = p[c_idx & 3].u;
-                            c.a = lum[a_idx & 0x7];
-                            dst[yy + xx] = premultiply(c).u;
-                            c_idx >>= 2;
-                            a_idx >>= 3;
-                        }
-                    dst += 4; // next 4x4 block
-                    src += blocksize;
-                }
-
-            else if (fourcc == FOURCC_ATI1)
-                for (int x=0; x < width; x += 4)
-                {
-                    UInt8 lum[8];
-                    UInt64 l_idx = OSReadLittleInt64(src, 0);
-                    makeLuminancePalette(l_idx, lum);
-                    l_idx >>= 16;
-
-                    for (int yy = 0; yy < 4*stride; yy += stride)
-                        for (int xx = 0; xx < 4; xx++)
-                        {
-                            c.r = c.g = c.b = lum[l_idx & 0x7];
-                            dst[yy + xx] = c.u;
-                            l_idx >>= 3;
-                        }
-                    dst += 4; // next 4x4 block
-                    src += blocksize;
-                }
-
-            else if (fourcc == FOURCC_ATI2)
-                for (int x=0; x < width; x += 4)
-                {
-                    UInt8 red[8], grn[8];
-                    UInt64 r_idx = OSReadLittleInt64(src, 0);
-                    makeLuminancePalette(r_idx, red);
-                    r_idx >>= 16;
-                    UInt64 g_idx = OSReadLittleInt64(src, 8);
-                    makeLuminancePalette(g_idx, grn);
-                    g_idx >>= 16;
-
-                    for (int yy = 0; yy < 4*stride; yy += stride)
-                        for (int xx = 0; xx < 4; xx++)
-                        {
-                            c.r = red[r_idx & 0x7];
-                            c.g = grn[g_idx & 0x7];
-                            computeColor32NormalB(c);
-                            dst[yy + xx] = c.u;
-                            r_idx >>= 3;
-                            g_idx >>= 3;
-                        }
-                    dst += 4; // next 4x4 block
-                    src += blocksize;
-                }
-
-            dst += (4 * stride - width);   // next set of 4 lines
-        }
-    }
-    else
-    {
-        // Linear data
-
-        UInt32 w;
-        Color32 c = { -1 }; // output pixel color
-        int rshift = maskshift(rmask);
-        int gshift = maskshift(gmask);
-        int bshift = maskshift(bmask);
-        int ashift = maskshift(amask);
-
-        for (int y = 0; y < height; y++)
-        {
-            if (fourcc == FOURCC_RGBA)  // common case
-                for (int x = 0; x < width; x++)
-                {
-                    w = OSReadLittleInt32(src, 0);
-                    src += pixelsize;
-                    c.a = (w & amask) >> ashift;
-                    c.r = (w & rmask) >> rshift;
-                    c.g = (w & gmask) >> gshift;
-                    c.b = (w & bmask) >> bshift;
-                    *(dst++) = premultiply(c).u;
-                }
-            else if (fourcc == FOURCC_RG)   // normal map
-                for (int x = 0; x < width; x++)
-                {
-                    w = OSReadLittleInt32(src, 0);
-                    src += pixelsize;
-                    c.r = (w & rmask) >> rshift;
-                    c.g = (w & gmask) >> gshift;
-                    computeColor32NormalB(c);
-                    *(dst++) = c.u;
-                }
-            else if (fourcc == FOURCC_LA)
-                for (int x = 0; x < width; x++)
-                {
-                    w = OSReadLittleInt32(src, 0);
-                    src += pixelsize;
-                    c.a = (w & amask) >> ashift;
-                    c.r = c.g = c.b = (w & rmask) >> rshift;    // by convention uses the red channel
-                    *(dst++) = premultiply(c).u;
-                }
-            else if (fourcc == FOURCC_L)   // no alpha
-                for (int x = 0; x < width; x++)
-                {
-                    w = OSReadLittleInt32(src, 0);
-                    src += pixelsize;
-                    c.r = c.g = c.b = (w & rmask) >> rshift;    // by convention uses the red channel
-                    *(dst++) = c.u;
-                }
-            else    // RGBX or RGBN - no alpha
-                for (int x = 0; x < width; x++)
-                {
-                    w = OSReadLittleInt32(src, 0);
-                    src += pixelsize;
-                    c.r = (w & rmask) >> rshift;
-                    c.g = (w & gmask) >> gshift;
-                    c.b = (w & bmask) >> bshift;
-                    *(dst++) = c.u;
-                }
-
-            dst += (stride - width);   // next line
-        }
-
-    }
-}
-
-
-// Size in bytes of this surface at specified mipmap level.
-- (int) surfaceSize: (int) mipmapLevel
-{
+    int mipmap = 0;
     int w = _mainSurfaceWidth;
     int h = _mainSurfaceHeight;
     int d = _mainSurfaceDepth;
 
-    while (--mipmapLevel > 0)
+    int surface_bytes = 0;
+    while (mipmap++ < _mipmapCount)
+    {
+        surface_bytes += (blocksize ?
+                          blocksize * ((w + 3) / 4) * ((h + 3) / 4) * d : // block aligned
+                          pixelsize * w * h * d);     // byte aligned
+        if (! (w /= 2)) w = 1;
+        if (! (h /= 2)) h = 1;
+        if (! (d /= 2)) d = 1;
+    }
+    return surface_bytes;
+}
+
+
+// Size in bytes of one surface at specified mipmap level (0-based).
+- (int) surfaceSize: (int) mipmapLevel
+{
+    int mipmap = 0;
+    int w = _mainSurfaceWidth;
+    int h = _mainSurfaceHeight;
+    int d = _mainSurfaceDepth;
+
+    while (mipmap++ < mipmapLevel)
     {
         if (! (w /= 2)) w = 1;
         if (! (h /= 2)) h = 1;
         if (! (d /= 2)) d = 1;
     }
-
     return (blocksize ?
             blocksize * ((w + 3) / 4) * ((h + 3) / 4) * d : // block aligned
             pixelsize * w * h * d);     // byte aligned
 }
+
 
 @synthesize codec = _codec;
 @synthesize mainSurfaceWidth  = _mainSurfaceWidth;

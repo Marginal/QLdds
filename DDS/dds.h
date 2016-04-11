@@ -116,7 +116,7 @@ typedef struct {
     unsigned int fourcc;            // FourCC code for recognised types
     NSString *_codec;               // Human-readable name of codec
     int _mainSurfaceWidth, _mainSurfaceHeight, _mainSurfaceDepth;   // image dimensions
-    int _mipmapCount, _ddsCaps2, _bpp;
+    int _surfaceCount, _mipmapCount, _ddsCaps2, _bpp;
     int blocksize;                  // BCn block size for compressed images
     int pixelsize;                  // size in bytes for uncompressed images
     int amask, bmask, gmask, rmask; // channel masks for uncompressed images
@@ -126,14 +126,33 @@ typedef struct {
 - (id) initWithURL : (NSURL *) url;
 + (id) ddsWithURL : (NSURL *) url;
 
+// Draw a DDS into an CGImage bitmap.
+// If the DDS is a cubemap all surfaces are drawn.
+//
 - (CGImageRef) CreateImage;
 - (CGImageRef) CreateImageWithPreferredWidth:(int)width andPreferredHeight:(int)height;
-- (void) DrawSurfaceWithDataAt:(const UInt8 *)src andWidth:(int)width andHeight:(int)height To:(UInt32 *)dst withStride:(int)stride;
+
+// Draw a DDS surface into an BGRA bitmap. Alpha is premultiplied since that's what CGImage needs.
+//  - surface: Surface number for cubemaps. Must be zero for non-cubemap textures.
+//  - mipmapLevel: mipmap depth. Must be zero for non-mipmapped textures.
+//  - dst points to the target bitmap which should be at least width * height * 4 bytes in size.
+//  - stride specifies the width of the target bitmap [pixels].
+//
+- (void) DecodeSurfacePremultiplied:(int)surface atLevel:(int)mipmapLevel To:(UInt32 *)dst withStride:(int)stride;
+
+// Decode a DDS surface into an BGRA bitmap. Alpha is not premultiplied (unless already in the source i.e. DXT2 and DXT4).
+//  - surface: Surface number for cubemaps. Must be zero for non-cubemap textures.
+//  - mipmapLevel: mipmap depth. Must be zero for non-mipmapped textures.
+//  - dst points to the target bitmap which should be at least width * height * 4 bytes in size.
+//  - stride specifies the width of the target bitmap [pixels].
+//
+- (void) DecodeSurface:(int)surface atLevel:(int)mipmapLevel To:(UInt32 *)dst withStride:(int)stride;
 
 @property (nonatomic,strong,readonly) NSString *codec;
 @property (nonatomic,assign,readonly) int mainSurfaceWidth;
 @property (nonatomic,assign,readonly) int mainSurfaceHeight;
 @property (nonatomic,assign,readonly) int mainSurfaceDepth;
+@property (nonatomic,assign,readonly) int surfaceCount;
 @property (nonatomic,assign,readonly) int mipmapCount;
 @property (nonatomic,assign,readonly) int ddsCaps2;
 @property (nonatomic,assign,readonly) int bpp;

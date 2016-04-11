@@ -72,6 +72,7 @@
 		AB8A4A961A22FAED002E5A59 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		AB8A4AA41A22FBB0002E5A59 /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		AB8A4AD81A22FD09002E5A59 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
+		AB9D8A6D1CBA91750004A0D3 /* decode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = decode.m; sourceTree = "<group>"; };
 		ABAB4A311A23898A00B1BD18 /* QLdds.qlgenerator */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QLdds.qlgenerator; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABD434D31A2D726A00ED8B26 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
 		ABD434D61A2E3FED00ED8B26 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -184,8 +185,9 @@
 		ABF5B48B1A2531AC0017F8E9 /* DDS */ = {
 			isa = PBXGroup;
 			children = (
-				ABF5B48C1A2531E40017F8E9 /* dds.m */,
 				ABF5B48D1A2531E40017F8E9 /* dds.h */,
+				ABF5B48C1A2531E40017F8E9 /* dds.m */,
+				AB9D8A6D1CBA91750004A0D3 /* decode.m */,
 			);
 			path = DDS;
 			sourceTree = "<group>";
