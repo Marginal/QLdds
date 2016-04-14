@@ -61,7 +61,7 @@
 													<key>GID</key>
 													<integer>0</integer>
 													<key>PATH</key>
-													<string>Build/Release/QLdds.app</string>
+													<string>Build/Products/Release/QLdds.app</string>
 													<key>PATH_TYPE</key>
 													<integer>1</integer>
 													<key>PERMISSIONS</key>
@@ -307,7 +307,7 @@
 											<key>GID</key>
 											<integer>0</integer>
 											<key>PATH</key>
-											<string>build/Release/QLdds.qlgenerator</string>
+											<string>Build/Products/Release/QLdds.qlgenerator</string>
 											<key>PATH_TYPE</key>
 											<integer>1</integer>
 											<key>PERMISSIONS</key>
@@ -411,7 +411,7 @@
 											<key>GID</key>
 											<integer>0</integer>
 											<key>PATH</key>
-											<string>build/Release/DDS.mdimporter</string>
+											<string>Build/Products/Release/DDS.mdimporter</string>
 											<key>PATH_TYPE</key>
 											<integer>1</integer>
 											<key>PERMISSIONS</key>
