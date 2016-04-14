@@ -428,18 +428,13 @@ inline static int maskshift(unsigned int mask)
     // This doesn't handle volume textures (which look like http://msdn.microsoft.com/en-us/library/windows/desktop/bb205579 )
     int mipmap = 0;
     if ((width || height) && _mainSurfaceDepth==1)
-        while (mipmap < _mipmapCount)
+        while (mipmap < _mipmapCount - 1 && img_width / 2 >= width && img_height / 2 >= height)
         {
-            if (img_width / 2 >= width || img_height / 2 >= height)
-            {
-                if (! (surface_width /= 2)) surface_width = 1;
-                if (! (surface_height/= 2)) surface_height= 1;
-                if (! (img_width /= 2)) img_width = 1;
-                if (! (img_height/= 2)) img_height= 1;
-                mipmap ++;
-            }
-            else
-                break;
+            if (! (surface_width /= 2)) surface_width = 1;
+            if (! (surface_height/= 2)) surface_height= 1;
+            if (! (img_width /= 2)) img_width = 1;
+            if (! (img_height/= 2)) img_height= 1;
+            mipmap ++;
         }
 
     // Draw

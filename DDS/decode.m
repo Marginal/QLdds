@@ -65,11 +65,11 @@ inline static Color32 alpha_nonmultiply(Color32 c, UInt8 a)
     int mipmap = 0;
     int width = _mainSurfaceWidth;
     int height= _mainSurfaceHeight;
-    while (mipmap++ < mipmapLevel)
+    while (mipmap < mipmapLevel)
     {
          if (! (width /= 2)) width = 1;
          if (! (height/= 2)) height= 1;
-         src += [self surfaceSize:mipmap];
+         src += [self surfaceSize:mipmap++];
     }
 
     if (blocksize)
@@ -100,7 +100,7 @@ inline static Color32 alpha_nonmultiply(Color32 c, UInt8 a)
                 for (int x=0; x < width; x += 4)
                 {
                     UInt64 alpha = OSReadLittleInt64(src, 0);
-                    makeColor32Palette4(OSReadLittleInt32(src, 8), p);
+                    makeColor32Palette(OSReadLittleInt32(src, 8), p);
                     UInt32 c_idx = OSReadLittleInt32(src, 12);
 
                     for (int yy = y; yy < MIN(y+4*stride, height*stride); yy += stride)
