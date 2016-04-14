@@ -808,7 +808,7 @@
 			<dict>
 				<key>installer-script.options:hostArchitectures</key>
 				<array>
-					<string>x86_64</string>
+					<string></string>
 				</array>
 			</dict>
 			<key>BUILD_FORMAT</key>
