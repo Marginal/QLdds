@@ -60,6 +60,6 @@
 	<key>QLPreviewWidth</key>
 	<integer>256</integer>
 	<key>QLThumbnailMinimumSize</key>
-	<integer>16</integer>
+	<integer>0</integer>
 </dict>
 </plist>
