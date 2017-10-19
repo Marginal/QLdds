@@ -56,6 +56,18 @@
 											<key>CHILDREN</key>
 											<array>
 												<dict>
+													<key>BUNDLE_CAN_DOWNGRADE</key>
+													<true/>
+													<key>BUNDLE_POSTINSTALL_PATH</key>
+													<dict>
+														<key>PATH_TYPE</key>
+														<integer>0</integer>
+													</dict>
+													<key>BUNDLE_PREINSTALL_PATH</key>
+													<dict>
+														<key>PATH_TYPE</key>
+														<integer>0</integer>
+													</dict>
 													<key>CHILDREN</key>
 													<array/>
 													<key>GID</key>
@@ -295,12 +307,19 @@
 									<key>CHILDREN</key>
 									<array>
 										<dict>
+											<key>BUNDLE_CAN_DOWNGRADE</key>
+											<true/>
 											<key>BUNDLE_POSTINSTALL_PATH</key>
 											<dict>
 												<key>PATH</key>
 												<string>qlgenerator/resetquicklookd</string>
 												<key>PATH_TYPE</key>
 												<integer>1</integer>
+											</dict>
+											<key>BUNDLE_PREINSTALL_PATH</key>
+											<dict>
+												<key>PATH_TYPE</key>
+												<integer>0</integer>
 											</dict>
 											<key>CHILDREN</key>
 											<array/>
@@ -399,12 +418,19 @@
 									<key>CHILDREN</key>
 									<array>
 										<dict>
+											<key>BUNDLE_CAN_DOWNGRADE</key>
+											<true/>
 											<key>BUNDLE_POSTINSTALL_PATH</key>
 											<dict>
 												<key>PATH</key>
 												<string>mdimporter/resetmds</string>
 												<key>PATH_TYPE</key>
 												<integer>1</integer>
+											</dict>
+											<key>BUNDLE_PREINSTALL_PATH</key>
+											<dict>
+												<key>PATH_TYPE</key>
+												<integer>0</integer>
 											</dict>
 											<key>CHILDREN</key>
 											<array/>
@@ -564,11 +590,27 @@
 				</dict>
 				<key>PAYLOAD_TYPE</key>
 				<integer>0</integer>
+				<key>SHOW_INVISIBLE</key>
+				<false/>
+				<key>SPLIT_FORKS</key>
+				<true/>
+				<key>TREAT_MISSING_FILES_AS_WARNING</key>
+				<false/>
 				<key>VERSION</key>
 				<integer>3</integer>
 			</dict>
 			<key>PACKAGE_SCRIPTS</key>
 			<dict>
+				<key>POSTINSTALL_PATH</key>
+				<dict>
+					<key>PATH_TYPE</key>
+					<integer>0</integer>
+				</dict>
+				<key>PREINSTALL_PATH</key>
+				<dict>
+					<key>PATH_TYPE</key>
+					<integer>0</integer>
+				</dict>
 				<key>RESOURCES</key>
 				<array/>
 			</dict>
@@ -579,16 +621,26 @@
 				<key>CONCLUSION_ACTION</key>
 				<integer>0</integer>
 				<key>FOLLOW_SYMBOLIC_LINKS</key>
-				<false/>
+				<true/>
 				<key>IDENTIFIER</key>
 				<string>uk.org.marginal.qldds</string>
+				<key>LOCATION</key>
+				<integer>0</integer>
 				<key>NAME</key>
 				<string>QLdds</string>
 				<key>OVERWRITE_PERMISSIONS</key>
 				<false/>
+				<key>PAYLOAD_SIZE</key>
+				<integer>-1</integer>
+				<key>RELOCATABLE</key>
+				<false/>
+				<key>USE_HFS+_COMPRESSION</key>
+				<false/>
 				<key>VERSION</key>
-				<string>1.3.1</string>
+				<string>1.3.2</string>
 			</dict>
+			<key>TYPE</key>
+			<integer>0</integer>
 			<key>UUID</key>
 			<string>1F03E77B-F4D3-4322-B38B-5BD1A75CC323</string>
 		</dict>
@@ -615,16 +667,7 @@
 		<key>PROJECT_PRESENTATION</key>
 		<dict>
 			<key>BACKGROUND</key>
-			<dict>
-				<key>ALIGNMENT</key>
-				<integer>4</integer>
-				<key>BACKGROUND_PATH</key>
-				<dict/>
-				<key>CUSTOM</key>
-				<false/>
-				<key>SCALING</key>
-				<integer>0</integer>
-			</dict>
+			<dict/>
 			<key>INSTALLATION TYPE</key>
 			<dict>
 				<key>HIERARCHIES</key>
@@ -659,8 +702,6 @@
 						<dict/>
 					</dict>
 				</dict>
-				<key>INSTALLATION TYPE</key>
-				<integer>0</integer>
 				<key>MODE</key>
 				<integer>1</integer>
 			</dict>
@@ -730,8 +771,6 @@
 			</dict>
 			<key>LICENSE</key>
 			<dict>
-				<key>KEYWORDS</key>
-				<dict/>
 				<key>LOCALIZATIONS</key>
 				<array>
 					<dict>
@@ -793,10 +832,6 @@
 					<true/>
 				</dict>
 			</array>
-			<key>POSTINSTALL_PATH</key>
-			<dict/>
-			<key>PREINSTALL_PATH</key>
-			<dict/>
 			<key>RESOURCES</key>
 			<array/>
 			<key>ROOT_VOLUME_ONLY</key>
@@ -808,7 +843,7 @@
 			<dict>
 				<key>installer-script.options:hostArchitectures</key>
 				<array>
-					<string></string>
+					<string>x86_64</string>
 				</array>
 			</dict>
 			<key>BUILD_FORMAT</key>
@@ -819,13 +854,6 @@
 				<string>.</string>
 				<key>PATH_TYPE</key>
 				<integer>1</integer>
-			</dict>
-			<key>CERTIFICATE</key>
-			<dict>
-				<key>NAME</key>
-				<string>Developer ID Installer: Jonathan Harris</string>
-				<key>PATH</key>
-				<string>/Users/jonathan/Library/Keychains/login.keychain</string>
 			</dict>
 			<key>EXCLUDED_FILES</key>
 			<array>
@@ -997,6 +1025,10 @@
 			</array>
 			<key>NAME</key>
 			<string>QuickLook DDS</string>
+			<key>PAYLOAD_ONLY</key>
+			<false/>
+			<key>TREAT_MISSING_PRESENTATION_DOCUMENTS_AS_WARNING</key>
+			<false/>
 		</dict>
 	</dict>
 	<key>TYPE</key>
