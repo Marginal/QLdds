@@ -376,8 +376,6 @@ inline static int maskshift(unsigned int mask)
     if (fourcc == FOURCC_UNKNOWN)
         return NULL;
 
-    const unsigned char *data_ptr = ddsdata;
-
     const int (*surface_layout)[2];     // position of each surface in the image [x, y]
     const int surface_layout_one [1][2] = { { 0, 0 } };
     const int surface_layout_full[6][2] = { { 2, 1 }, { 0, 1 }, { 1, 0 }, { 1, 2 }, { 1, 1 }, { 3, 1 } };
