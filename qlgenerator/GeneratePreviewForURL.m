@@ -46,7 +46,7 @@ OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview,
         NSDictionary *properties = [NSDictionary dictionaryWithObject:title forKey:(NSString *) kQLPreviewPropertyDisplayNameKey];
 
         CGContextRef context = QLPreviewRequestCreateContext(preview, CGSizeMake(CGImageGetWidth(image), CGImageGetHeight(image)),
-                                                             false, (__bridge CFDictionaryRef) properties);
+                                                             true, (__bridge CFDictionaryRef) properties);
         CGContextDrawImage(context, CGRectMake(0, 0, CGImageGetWidth(image), CGImageGetHeight(image)), image);
         QLPreviewRequestFlushContext(preview, context);
         CGContextRelease(context);
